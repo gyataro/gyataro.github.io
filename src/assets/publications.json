@@ -1,0 +1,15 @@
+[
+    {
+        "year": 2024,
+        "image": "/publications/thumbnail-01.jpg",
+        "title": "PhishDecloaker: Detecting CAPTCHA-cloaked Phishing Websites via Hybrid Vision-based Interactive Models",
+        "authors": ["Xiwen Teoh", "Yun Lin", "Ruofan Liu", "Zhiyong Huang", "Jin Song Dong"],
+        "venue": "USENIX Security",
+        "venue_link": "https://www.usenix.org/conference/usenixsecurity24",
+        "links": [
+            {"key": "Paper", "value": "https://www.usenix.org/conference/usenixsecurity24"},
+            {"key": "Website", "value": "https://sites.google.com/view/phishdecloaker/home"},
+            {"key": "Code", "value": "https://github.com/code-philia/PhishDecloaker"}
+        ]
+    }
+]

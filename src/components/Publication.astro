@@ -1,0 +1,102 @@
+---
+import authorLinks from "../assets/author_links.json";
+import Image from "astro/components/Image.astro";
+
+const { 
+    year = 2017,
+    image = "/publications/thumbnail.jpg",
+    title = "Attention Is All You Need",
+    authors = ["Ashish Vaswani", "Noam Shazeer", "Niki Parmar", "Jakob Uszkoreit", "Llion Jones", "Aidan N Gomez", "Lukasz Kaiser", "Illia Polosukhin"],
+    venue = "NeurIPS",
+    venue_link = "https://papers.nips.cc/paper_files/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html",
+    links = [
+        {key: "Paper", value: "https://papers.nips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf"},
+        {key: "Project Site", value: "https://github.com/topics/attention-is-all-you-need"},
+        {key: "Code", value: "https://pytorch.org/docs/stable/generated/torch.nn.Transformer.html"}
+    ],
+    notes = ["Influential Paper"]
+} = Astro.props;
+
+const getAuthorLink = (author) => {
+    if (author in authorLinks) return authorLinks[author]
+    else return `https://dblp.org/search/author?q=${encodeURIComponent(author)}`
+}
+---
+
+<li class="publication">
+    <div class="paper-image">
+        <Image 
+            decoding="async"
+            loading="lazy"
+            src={image}
+            width="250"
+            height="125"
+            quality="max"
+            alt={title}
+            style={{borderRadius: "5px", border: "1px solid var(--primary-text-color)"}}
+        /> 
+    </div>
+    <div class="paper-info">
+        <div class="paper-title">{title}</div>
+        <div class="paper-authors">
+            { 
+                authors.map((author, i, authors) => {
+                    let authorLink = getAuthorLink(author)
+                    if (i + 1 === authors.length) return <div><a href={authorLink} target="_blank">{author}</a></div>
+                    else return <div><a href={authorLink} target="_blank">{author}</a>,&nbsp;</div>
+                })
+            }
+        </div>
+        <div class="paper-links">
+            {
+                [{key: `${venue} ${year}`, value: venue_link}, ...links].map((link, i, links) => {
+                    if (i === 0) return <div class="paper-venue"><a href={link.value} target="_blank">{link.key}</a>&nbsp;/&nbsp;</div>
+                    else if (i + 1 === links.length) return <div class="paper-link"><a href={link.value} target="_blank">{link.key}</a></div>
+                    else return <div class="paper-link"><a href={link.value} target="_blank">{link.key}</a>&nbsp;/&nbsp;</div>
+                })
+            }
+        </div>
+    </div>
+</li>
+
+<style>    
+    li + li {
+        margin-top: 24px;
+    }
+
+    .publication {
+        display: flex;
+        width: 100%;
+        gap: 16px;
+    }
+
+    .paper-image {
+        width: 250px;
+    }
+
+    .paper-title {
+        font-weight: 700;
+    }
+
+    .paper-authors, .paper-links {
+        margin-top: 8px;
+    }
+
+    .paper-authors div, .paper-links div {
+        display: inline-block;
+    }
+
+    .paper-authors a {
+        color: var(--secondary-text-color);
+    }
+    
+    .paper-venue a { 
+        font-weight: 700;
+    }
+
+    @media screen and (max-width: 640px) {
+        .paper-image {
+            display: none;
+        }
+    }
+</style>

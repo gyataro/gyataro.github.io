@@ -1,0 +1,54 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Publication from '../components/Publication.astro';
+import publications from "../assets/publications.json";
+---
+
+<Layout title="Xiwen Teoh" description="Xiwen Teoh's portfolio website">
+	<main>
+		<h1 class="name">Xiwen Teoh</h1>
+		<section class="profile">
+			<Image 
+				src="/profile.jpg"
+				alt="Xiwen's profile photo."
+				width="180"
+				height="180"
+				quality="max"
+				style={{borderRadius: "20px", border: "1px solid var(--primary-text-color)"}}
+			/>
+			<p>
+				I am a Research Assistant at the Security Research Lab, National University of Singapore, 
+				advised by <a href="https://www.comp.nus.edu.sg/~dongjs/">Prof. Jin Song Dong</a> and <a href="http://linyun.info/" target="_blank">Prof. Yun Lin</a>. 
+				My research focus is on interactive Large Language Model (LLM) agents, anti-phishing, and web security.
+			</p>
+			<p>
+				<a href="https://github.com/gyataro" target="_blank">Github</a> / 
+				<a href="https://scholar.google.com/" target="_blank">Google Scholar</a> / 
+				<a href="https://www.linkedin.com/in/xiwenteoh/" target="_blank">LinkedIn</a> / 
+				<a href="mailto:teoh6g@gmail.com" target="_blank">Email</a>
+			</p>
+		</section>
+		<section class="publications">
+			<h2>Publications</h2>
+			<ul>
+				{ publications.map(publication => <Publication {...publication} />) }
+			</ul>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	ul {
+		list-style: none;
+	}
+
+	ul, li {
+		margin: 0;
+		padding: 0;
+	}
+
+	.publications {
+		margin-top: 32px;
+	}
+</style>

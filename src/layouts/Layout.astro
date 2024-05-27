@@ -1,0 +1,92 @@
+---
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/700.css';
+
+interface Props {
+	title: string;
+	description: string;
+}
+
+const { title, description } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>{title}</title>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="generator" content={Astro.generator} />
+		<meta content="IE=edge" http-equiv="X-UA-Compatible" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	</head>
+	<body>
+		<slot />
+		<footer>
+			&copy; Xiwen Teoh {year}.
+		</footer>
+	</body>
+</html>
+<style is:global>
+	:root {
+		--primary-text-color: #222222;
+		--secondary-text-color: #767676;
+		--primary-color: #244855;
+		--highlight-color: #0067FB;
+	}
+
+	body {
+		margin: auto;
+		padding: 0.5rem;
+		width: 800px;
+		max-width: calc(100% - 2rem);
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		font-family: 'Inter', sans-serif;
+		font-weight: 700;
+		line-height: 1.15;
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+		color: var(--primary-text-color);
+	}
+
+	html { font-size: 100%; } 
+	h1 { font-size: 2.074rem; }
+	h2 { font-size: 1.44rem; }
+
+	p {
+		font-family: 'Inter', sans-serif;
+		font-weight: 400;
+		font-size: 1rem;
+		line-height: 1.4;
+		color: var(--primary-text-color);
+	}
+
+    a { 
+        font-weight: 400;
+        text-decoration: none;
+        color: var(--highlight-color);
+    }
+
+	a:hover {
+		text-decoration: underline;
+	}
+
+	div {
+		font-family: 'Inter', sans-serif;
+		font-size: 1rem;
+	}
+
+	footer {
+		font-family: 'Inter', sans-serif;
+		font-weight: 400;
+		font-size: 1rem;
+		line-height: 1.4;
+		color: var(--primary-text-color);
+		margin-top: 32px;
+	}
+</style>
