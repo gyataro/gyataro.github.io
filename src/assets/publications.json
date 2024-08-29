@@ -1,12 +1,24 @@
 [
     {
         "year": 2024,
+        "title": "Detecting and Explaining Anomalies Caused by Web Tamper Attacks via Building Consistency-based Normality",
+        "authors": ["Yifan Liao", "Ming Xu", "Yun Lin", "Xiwen Teoh", "Xiaofei Xie", "Ruitao Feng", "Frank Liauw", "Hongyu Zhang", "Jin Song Dong"],
+        "venue": "ASE",
+        "venue_link": "https://conf.researchr.org/home/ase-2024",
+        "links": [
+            {"key": "Paper", "value": "https://conf.researchr.org/home/ase-2024"},
+            {"key": "Website", "value": "https://sites.google.com/view/webnorm/overview"},
+            {"key": "Code", "value": "https://github.com/JasonBourne1998/TamperLogPrompt"}
+        ]
+    },
+    {
+        "year": 2024,
         "title": "Less Defined Knowledge and More True Alarms: Reference-based Phishing Detection without a Pre-defined Reference List",
         "authors": ["Ruofan Liu", "Yun Lin", "Xiwen Teoh", "Gongshen Liu", "Zhiyong Huang", "Jin Song Dong"],
         "venue": "USENIX Security",
-        "venue_link": "https://www.usenix.org/conference/usenixsecurity24",
+        "venue_link": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-ruofan",
         "links": [
-            {"key": "Paper", "value": "https://www.usenix.org/conference/usenixsecurity24"},
+            {"key": "Paper", "value": "https://www.usenix.org/system/files/usenixsecurity24-liu-ruofan.pdf"},
             {"key": "Website", "value": "https://sites.google.com/view/phishllm"},
             {"key": "Code", "value": "https://github.com/code-philia/phishllm"}
         ]
@@ -16,9 +28,9 @@
         "title": "PhishDecloaker: Detecting CAPTCHA-cloaked Phishing Websites via Hybrid Vision-based Interactive Models",
         "authors": ["Xiwen Teoh", "Yun Lin", "Ruofan Liu", "Zhiyong Huang", "Jin Song Dong"],
         "venue": "USENIX Security",
-        "venue_link": "https://www.usenix.org/conference/usenixsecurity24",
+        "venue_link": "https://www.usenix.org/conference/usenixsecurity24/presentation/teoh",
         "links": [
-            {"key": "Paper", "value": "https://www.usenix.org/conference/usenixsecurity24"},
+            {"key": "Paper", "value": "https://www.usenix.org/system/files/usenixsecurity24-teoh.pdf"},
             {"key": "Website", "value": "https://sites.google.com/view/phishdecloaker/home"},
             {"key": "Code", "value": "https://github.com/code-philia/PhishDecloaker"}
         ]

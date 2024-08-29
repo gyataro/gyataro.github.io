@@ -25,16 +25,16 @@ const getAuthorLink = (author) => {
 
 <li class="publication">
     <div class="paper-info">
-        <div class="paper-title">{title}</div>
         <div class="paper-authors">
             { 
                 authors.map((author, i, authors) => {
                     let authorLink = getAuthorLink(author)
-                    if (i + 1 === authors.length) return <div><a href={authorLink} target="_blank">{author}</a></div>
-                    else return <div><a href={authorLink} target="_blank">{author}</a>,&nbsp;</div>
+                    let spacing = (i + 1 === authors.length)? "" : ",\u00A0";
+                    return <div><a href={authorLink} target="_blank">{author}</a>{spacing}</div>
                 })
             }
         </div>
+        <div class="paper-title">{title}</div>
         <div class="paper-links">
             {
                 [{key: `${venue} ${year}`, value: venue_link}, ...links].map((link, i, links) => {
@@ -49,7 +49,7 @@ const getAuthorLink = (author) => {
 
 <style>    
     li + li {
-        margin-top: 24px;
+        margin-top: 28px;
     }
 
     .publication {
@@ -58,16 +58,12 @@ const getAuthorLink = (author) => {
         gap: 16px;
     }
 
-    .paper-image {
-        width: 250px;
+    .paper-info > div + div {
+        margin-top: 6px;
     }
 
     .paper-title {
         font-weight: 700;
-    }
-
-    .paper-authors, .paper-links {
-        margin-top: 8px;
     }
 
     .paper-authors div, .paper-links div {
@@ -75,7 +71,7 @@ const getAuthorLink = (author) => {
     }
 
     .paper-authors a {
-        color: var(--secondary-text-color);
+        color: var(--primary-text-color);
     }
     
     .paper-venue a { 
