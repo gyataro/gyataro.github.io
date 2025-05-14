@@ -1,10 +1,8 @@
 ---
 import authorLinks from "../assets/author_links.json";
-import Image from "astro/components/Image.astro";
 
 const { 
     year = 2017,
-    image = "/publications/thumbnail.jpg",
     title = "Attention Is All You Need",
     authors = ["Ashish Vaswani", "Noam Shazeer", "Niki Parmar", "Jakob Uszkoreit", "Llion Jones", "Aidan N Gomez", "Lukasz Kaiser", "Illia Polosukhin"],
     venue = "NeurIPS",
@@ -13,8 +11,7 @@ const {
         {key: "Paper", value: "https://papers.nips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf"},
         {key: "Project Site", value: "https://github.com/topics/attention-is-all-you-need"},
         {key: "Code", value: "https://pytorch.org/docs/stable/generated/torch.nn.Transformer.html"}
-    ],
-    notes = ["Influential Paper"]
+    ]
 } = Astro.props;
 
 const getAuthorLink = (author) => {
@@ -26,11 +23,13 @@ const getAuthorLink = (author) => {
 <li class="publication">
     <div class="paper-info">
         <div class="paper-authors">
-            { 
-                authors.map((author, i, authors) => {
-                    let authorLink = getAuthorLink(author)
-                    let spacing = (i + 1 === authors.length)? "" : ",\u00A0";
-                    return <div><a href={authorLink} target="_blank">{author}</a>{spacing}</div>
+            {
+                authors.map((authorObj, i) => {
+                    const { name, cofirst } = authorObj;
+                    const authorLink = getAuthorLink(name);
+                    const spacing = i + 1 === authors.length ? "" : ",\u00A0";
+                    const marker = cofirst ? "*" : "";
+                    return <div><a href={authorLink} class={name === "Xiwen Teoh" ? "me" : ""} target="_blank">{name}</a>{marker}{spacing}</div>
                 })
             }
         </div>
@@ -76,6 +75,10 @@ const getAuthorLink = (author) => {
     
     .paper-venue a { 
         font-weight: 700;
+    }
+
+    .me {
+        text-decoration: underline;
     }
 
     @media screen and (max-width: 640px) {
