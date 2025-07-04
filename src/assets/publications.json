@@ -1,6 +1,26 @@
 [
     {
         "year": 2025,
+        "title": "Are CAPTCHAs Still Bot-hard? Generalized Visual CAPTCHA Solving with Agentic Vision Language Model",
+        "authors": [
+            { "name": "Xiwen Teoh" },
+            { "name": "Yun Lin" },
+            { "name": "Siqi Li" },
+            { "name": "Ruofan Liu" },
+            { "name": "Avi Sollomoni" },
+            { "name": "Yaniv Harel" },
+            { "name": "Jin Song Dong" }
+        ],
+        "venue": "USENIX Security",
+        "venue_link": "https://www.usenix.org/conference/usenixsecurity25",
+        "links": [
+            {"key": "Paper", "value": "http://linyun.info/publications/usenix-sec25.pdf"},
+            {"key": "Website", "value": "https://halligan.pages.dev/"},
+            {"key": "Code", "value": "https://zenodo.org/records/15709075"}
+        ]
+    },
+    {
+        "year": 2025,
         "title": "GUIPilot: A Consistency-based Mobile GUI Testing Approach for Detecting Application-specific Bugs",
         "authors": [
             { "name": "Ruofan Liu", "cofirst": true },

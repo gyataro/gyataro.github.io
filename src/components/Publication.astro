@@ -22,6 +22,16 @@ const getAuthorLink = (author) => {
 
 <li class="publication">
     <div class="paper-info">
+        <div class="paper-title">{title}</div>
+        <div class="paper-links">
+            {
+                [{key: `${venue} ${year}`, value: venue_link}, ...links].map((link, i, links) => {
+                    if (i === 0) return <div class="paper-venue"><a href={link.value} target="_blank">{link.key}</a>&nbsp;/&nbsp;</div>
+                    else if (i + 1 === links.length) return <div class="paper-link"><a href={link.value} target="_blank">{link.key}</a></div>
+                    else return <div class="paper-link"><a href={link.value} target="_blank">{link.key}</a>&nbsp;/&nbsp;</div>
+                })
+            }
+        </div>
         <div class="paper-authors">
             {
                 authors.map((authorObj, i) => {
@@ -30,16 +40,6 @@ const getAuthorLink = (author) => {
                     const spacing = i + 1 === authors.length ? "" : ",\u00A0";
                     const marker = cofirst ? "*" : "";
                     return <div><a href={authorLink} class={name === "Xiwen Teoh" ? "me" : ""} target="_blank">{name}</a>{marker}{spacing}</div>
-                })
-            }
-        </div>
-        <div class="paper-title">{title}</div>
-        <div class="paper-links">
-            {
-                [{key: `${venue} ${year}`, value: venue_link}, ...links].map((link, i, links) => {
-                    if (i === 0) return <div class="paper-venue"><a href={link.value} target="_blank">{link.key}</a>&nbsp;/&nbsp;</div>
-                    else if (i + 1 === links.length) return <div class="paper-link"><a href={link.value} target="_blank">{link.key}</a></div>
-                    else return <div class="paper-link"><a href={link.value} target="_blank">{link.key}</a>&nbsp;/&nbsp;</div>
                 })
             }
         </div>
