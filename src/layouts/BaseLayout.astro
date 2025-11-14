@@ -12,6 +12,7 @@ const {
   description = SITE_DESCRIPTION,
   oneCol,
 } = Astro.props;
+const path = Astro.url.pathname;
 ---
 
 <!doctype html>
@@ -26,6 +27,36 @@ const {
       { "max-w-3xl": oneCol },
     ]}
   >
+    <div class="fixed top-0 inset-x-0 z-50 group">
+      <div class="hidden sm:block h-2 w-full"></div>
+      <nav
+        class:list={[
+          "mx-auto bg-white/90 backdrop-blur border-b border-main transition-transform duration-200",
+          "translate-y-0 sm:-translate-y-full sm:group-hover:translate-y-0",
+          { "max-w-5xl": !oneCol },
+          { "max-w-3xl": oneCol },
+        ]}
+      >
+        <div class="flex items-center gap-4 px-4 py-2">
+          <a
+            href="/"
+            class:list={[
+              "px-2 py-1 rounded-md text-muted hover:text-primary",
+              { "text-main font-semibold": path === "/" },
+            ]}
+            aria-current={path === "/" ? "page" : undefined}
+          >Home</a>
+          <a
+            href="/publications"
+            class:list={[
+              "px-2 py-1 rounded-md text-muted hover:text-primary",
+              { "text-main font-semibold": path.startsWith("/publications") },
+            ]}
+            aria-current={path.startsWith("/publications") ? "page" : undefined}
+          >Publications</a>
+        </div>
+      </nav>
+    </div>
     <slot />
   </body>
 </html>
