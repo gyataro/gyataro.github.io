@@ -4,18 +4,17 @@ venue: ICSE
 year: 2026
 date: 2026-10-01T00:00:00Z
 authors:
-  - Yifan Liao
-  - Ming Xu
+  - Wenjie Zhang
   - Yun Lin
+  - Kwok Chun Fung
   - Xiwen Teoh
   - Xiaofei Xie
-  - Ruitao Feng
   - Frank Liauw
   - Hongyu Zhang
   - Jin Song Dong
 links:
-  paper: https://jasonbourne1998.github.io/data/ASE24.pdf
-  website: https://sites.google.com/view/webnorm/overview
-  code: https://github.com/JasonBourne1998/TamperLogPrompt
+  paper: http://linyun.info/publications/icse26.pdf
+  website: https://sites.google.com/view/mines-anomaly-detection/home
+  code: https://github.com/anonymous19207538/repo
 selected: false
 ---

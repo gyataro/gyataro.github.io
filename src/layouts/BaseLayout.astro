@@ -1,5 +1,6 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
+import ProfileCard from "../components/ProfileCard.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 interface Props {
   title?: string;
@@ -22,7 +23,7 @@ const path = Astro.url.pathname;
   </head>
   <body
     class:list={[
-      "mx-auto p-10",
+      "mx-auto p-10 pt-18 sm:pt-10",
       { "max-w-5xl": !oneCol },
       { "max-w-3xl": oneCol },
     ]}
@@ -31,7 +32,7 @@ const path = Astro.url.pathname;
       <div class="hidden sm:block h-2 w-full"></div>
       <nav
         class:list={[
-          "mx-auto bg-white/90 backdrop-blur border-b border-main transition-transform duration-200",
+          "mx-auto bg-white/90 backdrop-blur border border-main sm:rounded-full sm:ring-1 transition-transform duration-200",
           "translate-y-0 sm:-translate-y-full sm:group-hover:translate-y-0",
           { "max-w-5xl": !oneCol },
           { "max-w-3xl": oneCol },
@@ -57,6 +58,19 @@ const path = Astro.url.pathname;
         </div>
       </nav>
     </div>
-    <slot />
+    <div class:list={[
+      "sm:hidden mb-12",
+      { hidden: path !== "/" },
+    ]}>
+      <ProfileCard />
+    </div>
+    <div class="sm:grid sm:grid-cols-3 sm:gap-20">
+      <div class="hidden sm:block mb-12 sm:mb-0 sm:col-span-1 sm:sticky sm:top-12 sm:h-fit">
+        <ProfileCard />
+      </div>
+      <div class="col-span-2 prose">
+        <slot />
+      </div>
+    </div>
   </body>
 </html>

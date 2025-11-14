@@ -10,6 +10,8 @@ interface Props {
   year: string | number
   authors: string[]
   me?: string
+  cofirst?: boolean
+  corresponding?: boolean
   links?: {
     paper?: string
     website?: string
@@ -17,7 +19,7 @@ interface Props {
   }
 }
 
-const { title, venue, year, authors, me = NAME, links } = Astro.props
+const { title, venue, year, authors, me = NAME, cofirst, corresponding, links } = Astro.props
 const meIndex = me ? authors.findIndex(a => a.toLowerCase() === me.toLowerCase()) : -1
 ---
 <details class="group bg-muted border border-main rounded-md shadow-sm hover:bg-hover transition-colors">
@@ -30,7 +32,13 @@ const meIndex = me ? authors.findIndex(a => a.toLowerCase() === me.toLowerCase()
     <h3 class="text-main font-semibold">{title}</h3>
     <div class="text-sm">
       {authors.map((a, i) => (
-        <span class={i === meIndex ? "font-semibold text-indigo-700" : ""}>{a}{i < authors.length - 1 ? ",\u00A0" : ""}</span>
+        <span class={i === meIndex ? "font-semibold text-indigo-700" : ""}>
+          {a}
+          {i === meIndex && (cofirst || corresponding) ? (
+            <span>{`${cofirst ? "*" : ""}${corresponding ? "#" : ""}`}</span>
+          ) : null}
+          {i < authors.length - 1 ? ",\u00A0" : ""}
+        </span>
       ))}
     </div>
     <div class="mt-2 flex items-center gap-2 text-xs text-muted">

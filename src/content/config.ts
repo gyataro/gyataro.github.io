@@ -9,6 +9,8 @@ const publications = defineCollection({
     date: z.preprocess((v) => (typeof v === 'string' ? new Date(v) : v), z.date()),
     authors: z.array(z.string()),
     me: z.string().optional(),
+    cofirst: z.boolean().optional(),
+    corresponding: z.boolean().optional(),
     links: z
       .object({
         paper: z.string().url().optional(),
