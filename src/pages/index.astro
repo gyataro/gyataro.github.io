@@ -62,11 +62,4 @@ awards.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
       </div>
     </div>
   </div>
-  <script>
-    const nav = document.getElementById('breadcrumbNav');
-    nav?.addEventListener('change', (e) => {
-      const v = e.target.value;
-      if (v) location.href = v;
-    });
-  </script>
 </BaseLayout>

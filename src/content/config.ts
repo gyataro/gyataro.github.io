@@ -16,7 +16,16 @@ const publications = defineCollection({
         code: z.string().url().optional(),
       })
       .optional(),
+    selected: z.boolean()
   }),
 });
 
-export const collections = { publications };
+const awards = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    date: z.preprocess((v) => (typeof v === 'string' ? new Date(v) : v), z.date())
+  }),
+});
+
+export const collections = { publications, awards };

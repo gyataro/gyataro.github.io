@@ -2,14 +2,13 @@
 interface Props {
     title: string
     date: Date
-    href: string
 }
 
-const { title, date, href } = Astro.props
+const { title, date } = Astro.props
 
 const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
 ---
-<a class="flex justify-between w-full gap-4 items-start text-main hover:text-primary" href={href}>
+<a class="flex justify-between w-full gap-4 items-start text-main hover:text-primary">
     <p class="flex-1">{title}</p>
     <p class="shrink-0 text-nowrap text-end text-muted text-sm">{dateString}</p>
 </a>
