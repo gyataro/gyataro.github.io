@@ -1,0 +1,31 @@
+---
+import { Image } from "astro:assets";
+import profile from "../assets/profile.jpg"
+import SocialLink from "./SocialLink.astro";
+import GithubIcon from "./icons/github.astro"
+import LinkedinIcon from "./icons/linkedin.astro"
+import ScholarIcon from "./icons/scholar.astro"
+import EmailIcon from "./icons/email.astro"
+import { SCHOLAR_LINK, LINKEDIN_LINK, GITHUB_LINK, EMAIL_LINK, NAME } from "../consts";
+import Github from "./icons/github.astro";
+---
+
+<div class="flex flex-col gap-4">
+    <Image 
+        src={profile}
+        alt="My profile picture"
+        width={240}
+        densities={[1.5, 2]}
+        loading="eager"
+    />
+    <div>
+        <h1 class="mb-1 text-3xl font-bold text-main">{NAME}</h1>
+        <p class="text-muted">CS PhD Student @ National University of Singapore</p>
+    </div>
+    <div class="flex flex-col gap-2">
+        <SocialLink text="scholar / Xiwen Teoh" href={SCHOLAR_LINK}><ScholarIcon /></SocialLink>
+        <SocialLink text="linkedin / xiwenteoh" href={LINKEDIN_LINK}><LinkedinIcon /></SocialLink>
+        <SocialLink text="github / gyataro" href={GITHUB_LINK}><GithubIcon /></SocialLink>
+        <SocialLink text="mail / xiwen@nus.edu.sg" href={EMAIL_LINK}><EmailIcon /></SocialLink>
+    </div>  
+</div>

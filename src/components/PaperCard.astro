@@ -1,0 +1,64 @@
+---
+import PaperIcon from "./icons/paper.astro"
+import WebsiteIcon from "./icons/website.astro"
+import CodeIcon from "./icons/code.astro"
+import { NAME } from "../consts"
+
+interface Props {
+  title: string
+  venue: string
+  year: string | number
+  authors: string[]
+  me?: string
+  links?: {
+    paper?: string
+    website?: string
+    code?: string
+  }
+}
+
+const { title, venue, year, authors, me = NAME, links } = Astro.props
+const meIndex = me ? authors.findIndex(a => a.toLowerCase() === me.toLowerCase()) : -1
+---
+<details class="group bg-muted border border-main rounded-md shadow-sm hover:bg-hover transition-colors">
+  <summary class="list-none cursor-pointer p-4 flex flex-col gap-2 focus:outline-none focus:ring-2 focus:ring-primary/40 rounded-md">
+    <div class="flex items-center text-sm font-semibold">
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 ring-1 ring-indigo-200">
+        {venue} • {year}
+      </span>
+    </div>
+    <h3 class="text-main font-semibold">{title}</h3>
+    <div class="text-sm">
+      {authors.map((a, i) => (
+        <span class={i === meIndex ? "font-semibold text-indigo-700" : ""}>{a}{i < authors.length - 1 ? ",\u00A0" : ""}</span>
+      ))}
+    </div>
+    <div class="mt-2 flex items-center gap-2 text-xs text-muted">
+      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-open:rotate-180"><path d="M6 9l6 6 6-6" /></svg>
+      <span class="group-open:hidden">Show details</span>
+      <span class="hidden group-open:inline">Hide details</span>
+    </div>
+  </summary>
+  <div class="px-4 py-4 flex flex-col gap-3 border-t border-main/30">
+    <div class="flex flex-wrap gap-2">
+      {links?.paper && (
+        <a href={links.paper} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full ring-1 ring-gray-200 text-gray-700 hover:bg-gray-50 hover:ring-gray-300">
+          <PaperIcon />
+          <span class="text-sm">Paper</span>
+        </a>
+      )}
+      {links?.website && (
+        <a href={links.website} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full ring-1 ring-gray-200 text-gray-700 hover:bg-gray-50 hover:ring-gray-300">
+          <WebsiteIcon />
+          <span class="text-sm">Website</span>
+        </a>
+      )}
+      {links?.code && (
+        <a href={links.code} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full ring-1 ring-gray-200 text-gray-700 hover:bg-gray-50 hover:ring-gray-300">
+          <CodeIcon />
+          <span class="text-sm">Code</span>
+        </a>
+      )}
+    </div>
+  </div>
+</details>

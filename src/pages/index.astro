@@ -1,16 +1,72 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProfileCard from "../components/ProfileCard.astro";
+import PaperCard from "../components/PaperCard.astro";
+import Award from "../components/Award.astro";
+import { getCollection } from 'astro:content';
 
+const publications = await getCollection('publications');
+publications.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const selectedPublications = publications.filter((p) => p.data.selected);
+
+const awards = await getCollection('awards');
+awards.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout>
+  <div class="sm:grid sm:grid-cols-3 sm:gap-20">
+    <div class="mb-12 sm:mb-0 sm:col-span-1 sm:sticky sm:top-12 sm:h-fit">
+      <ProfileCard />
+    </div>
+    <div class="col-span-2 prose">
+      <h2 class="mb-1">About me</h2>
+      <p>
+        Hello, I'm Xiwen, a PhD student in Computer Science. 
+      </p>
+      <p>
+        I am jointly advised by
+        <a href="https://www.comp.nus.edu.sg/~dongjs/" target="_blank">Prof. Jin Song Dong</a> at the Programming Languages and Software Engineering (PLSE) Lab 
+        under National University of Singapore (NUS),
+        and by <a href="http://linyun.info/" target="_blank">Prof. Yun Lin</a> at the CoPhi Research Group
+        under Shanghai Jiao Tong University (SJTU). 
+      </p>
+
+      <p>
+        My research is about AI agents that see and understand the world as symbols to solve problems.
+        I use this approach for <b>web security</b>, by manipulating these symbols to check, secure, or break systems, 
+        and for <b>testing graphical user interfaces (GUI)</b>, by verifying that the symbols conform to expectations. 
+        Lately, I work with multimodal language model (MLLM) agents.
+      </p>
+
+      <h2 class="mb-1">Publications</h2>
+      <p>This is a selected list of recent publications central to my research. You can <a href="/research">check the full list here</a>.</p>
+      <p>(*): Co-first author</p>
+      <div class="not-prose flex flex-col gap-3">
+        {selectedPublications.map(({ data }) => (
+          <PaperCard
+            title={data.title}
+            venue={data.venue}
+            year={data.year}
+            authors={data.authors}
+            me={data.me}
+            links={data.links}
+          />
+        ))}
+      </div>
+
+      <h2 class="mb-1">Awards</h2>
+      <div class="not-prose flex flex-col gap-3">
+        {awards.map(({ data }) => (
+          <Award title={data.title} date={data.date} />
+        ))}
+      </div>
+    </div>
+  </div>
+  <script>
+    const nav = document.getElementById('breadcrumbNav');
+    nav?.addEventListener('change', (e) => {
+      const v = e.target.value;
+      if (v) location.href = v;
+    });
+  </script>
+</BaseLayout>

@@ -1,0 +1,84 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PaperCard from "../components/PaperCard.astro";
+import ProfileCard from "../components/ProfileCard.astro";
+import { getCollection } from 'astro:content';
+
+const publications = await getCollection('publications');
+publications.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const venues = Array.from(new Set(publications.map((p) => p.data.venue))).sort((a, b) => a.localeCompare(b));
+const years = Array.from(new Set(publications.map((p) => p.data.year))).sort((a, b) => Number(b) - Number(a));
+const venueCounts = publications.reduce((acc, p) => {
+  const v = p.data.venue;
+  acc[v] = (acc[v] || 0) + 1;
+  return acc;
+}, {});
+const yearCounts = publications.reduce((acc, p) => {
+  const y = String(p.data.year);
+  acc[y] = (acc[y] || 0) + 1;
+  return acc;
+}, {});
+---
+<BaseLayout>
+  <div class="sm:grid sm:grid-cols-3 sm:gap-20">
+    <div class="mb-12 sm:mb-0 sm:col-span-1 sm:sticky sm:top-12 sm:h-fit">
+      <ProfileCard />
+    </div>
+    <div class="col-span-2 prose">
+      <h2 class="mb-1">Publications</h2>
+      <p>This is a complete list of my publications.</p>
+      <div class="not-prose mb-4 flex flex-wrap gap-3 items-center">
+      <label class="flex items-center gap-2 text-sm">
+        <span class="text-muted">Venue</span>
+        <select id="venueFilter" class="px-2 py-1 rounded-md border border-main bg-muted text-main">
+          <option value="">All ({publications.length})</option>
+          {venues.map((v) => (
+            <option value={v}>{v} ({venueCounts[v] ?? 0})</option>
+          ))}
+        </select>
+      </label>
+      <label class="flex items-center gap-2 text-sm">
+        <span class="text-muted">Year</span>
+        <select id="yearFilter" class="px-2 py-1 rounded-md border border-main bg-muted text-main">
+          <option value="">All ({publications.length})</option>
+          {years.map((y) => (
+            <option value={String(y)}>{y} ({yearCounts[String(y)] ?? 0})</option>
+          ))}
+        </select>
+      </label>
+      </div>
+      <div id="pubList" class="not-prose flex flex-col gap-3">
+      {publications.map(({ data }) => (
+        <div class="pub-item" data-venue={data.venue} data-year={String(data.year)}>
+          <PaperCard
+            title={data.title}
+            venue={data.venue}
+            year={data.year}
+            authors={data.authors}
+            me={data.me}
+            links={data.links}
+          />
+        </div>
+      ))}
+      </div>
+    </div>
+  </div>
+  <script>
+    const venueSelect = document.getElementById('venueFilter');
+    const yearSelect = document.getElementById('yearFilter');
+    const items = Array.from(document.querySelectorAll('#pubList .pub-item'));
+    function applyFilter() {
+      const v = venueSelect.value.trim().toLowerCase();
+      const y = yearSelect.value.trim();
+      items.forEach((el) => {
+        const matchVenue = !v || el.dataset.venue.toLowerCase() === v;
+        const matchYear = !y || el.dataset.year === y;
+        el.classList.toggle('hidden', !(matchVenue && matchYear));
+      });
+    }
+    venueSelect.addEventListener('change', applyFilter);
+    yearSelect.addEventListener('change', applyFilter);
+  </script>
+  
+</BaseLayout>
