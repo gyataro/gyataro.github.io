@@ -22,26 +22,30 @@ const yearCounts = publications.reduce((acc, p) => {
 <BaseLayout>
   <h2 class="mb-1">Publications</h2>
   <p>This is a complete list of my publications. (*): Co-first author</p>
+  <!-- Filters: venue and year selectors with dynamic counts -->
   <div class="not-prose mb-4 flex flex-wrap gap-3 items-center">
+  <!-- Venue filter -->
   <label class="flex items-center gap-2 text-sm">
     <span class="text-muted">Venue</span>
     <select id="venueFilter" class="px-2 py-1 rounded-md border border-main bg-muted text-main">
-      <option value="">All ({publications.length})</option>
+      <option value="" data-label="All">All ({publications.length})</option>
       {venues.map((v) => (
-        <option value={v}>{v} ({venueCounts[v] ?? 0})</option>
+        <option value={v} data-label={v}>{v} ({venueCounts[v] ?? 0})</option>
       ))}
     </select>
   </label>
+  <!-- Year filter -->
   <label class="flex items-center gap-2 text-sm">
     <span class="text-muted">Year</span>
     <select id="yearFilter" class="px-2 py-1 rounded-md border border-main bg-muted text-main">
-      <option value="">All ({publications.length})</option>
+      <option value="" data-label="All">All ({publications.length})</option>
       {years.map((y) => (
-        <option value={String(y)}>{y} ({yearCounts[String(y)] ?? 0})</option>
+        <option value={String(y)} data-label={String(y)}>{y} ({yearCounts[String(y)] ?? 0})</option>
       ))}
     </select>
   </label>
   </div>
+  <!-- Publication list; each item carries facet data attributes -->
   <div id="pubList" class="not-prose flex flex-col gap-3">
   {publications.map(({ data }) => (
     <div class="pub-item" data-venue={data.venue} data-year={String(data.year)}>
@@ -59,19 +63,69 @@ const yearCounts = publications.reduce((acc, p) => {
   ))}
   </div>
   <script>
-    const venueSelect = document.getElementById('venueFilter');
-    const yearSelect = document.getElementById('yearFilter');
-    const items = Array.from(document.querySelectorAll('#pubList .pub-item'));
-    function applyFilter() {
-      const v = venueSelect.value.trim().toLowerCase();
-      const y = yearSelect.value.trim();
-      items.forEach((el) => {
-        const matchVenue = !v || el.dataset.venue.toLowerCase() === v;
-        const matchYear = !y || el.dataset.year === y;
-        el.classList.toggle('hidden', !(matchVenue && matchYear));
-      });
+    // Collect publication items to filter
+    const items = Array.from(document.querySelectorAll('#pubList .pub-item'))
+    // Facet configuration: add new entries here to support more filters
+    const facets = [
+      {
+        id: 'venue',
+        select: document.getElementById('venueFilter'),
+        getValue: (el) => el.dataset.venue,
+      },
+      {
+        id: 'year',
+        select: document.getElementById('yearFilter'),
+        getValue: (el) => el.dataset.year,
+      },
+    ]
+
+    // Read current selected values across all facets
+    function currentState() {
+      return Object.fromEntries(facets.map(f => [f.id, f.select.value]))
     }
-    venueSelect.addEventListener('change', applyFilter);
-    yearSelect.addEventListener('change', applyFilter);
+
+    // Recalculate option counts per facet, conditioning on other facet selections
+    function updateCounts() {
+      facets.forEach(facet => {
+        const otherState = Object.fromEntries(facets.filter(f => f !== facet).map(f => [f.id, f.select.value]))
+        const pool = items.filter(el => {
+          return Object.entries(otherState).every(([id, val]) => {
+            if (!val) return true
+            const fac = facets.find(ff => ff.id === id)
+            return fac.getValue(el) === val
+          })
+        })
+        const tally = {}
+        pool.forEach(el => {
+          const v = facet.getValue(el)
+          tally[v] = (tally[v] || 0) + 1
+        })
+        // Update labels and hide options that have zero count (except selected and All)
+        Array.from(facet.select.options).forEach(opt => {
+          const base = opt.dataset.label || opt.textContent.replace(/\s*\(\d+\)\s*$/, '')
+          opt.dataset.label = base
+          const c = opt.value === '' ? pool.length : (tally[opt.value] || 0)
+          opt.textContent = `${base} (${c})`
+          opt.hidden = opt.value !== '' && c === 0 && !opt.selected
+        })
+      })
+    }
+
+    // Apply current filters to the list and update the facet counts
+    function applyFilter() {
+      const state = currentState()
+      items.forEach(el => {
+        const match = facets.every(f => {
+          const val = state[f.id]
+          return !val || f.getValue(el) === val
+        })
+        el.classList.toggle('hidden', !match)
+      })
+      updateCounts()
+    }
+
+    // Wire events and initialize counts on page load
+    facets.forEach(f => f.select.addEventListener('change', applyFilter))
+    updateCounts()
   </script>
 </BaseLayout>
