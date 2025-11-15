@@ -1,17 +1,16 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
 import ProfileCard from "../components/ProfileCard.astro";
+import Navbar from "../components/Navbar.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 interface Props {
   title?: string;
   description?: string;
-  oneCol?: boolean;
 }
 
 const {
   title = SITE_TITLE,
   description = SITE_DESCRIPTION,
-  oneCol,
 } = Astro.props;
 const path = Astro.url.pathname;
 ---
@@ -23,41 +22,12 @@ const path = Astro.url.pathname;
   </head>
   <body
     class:list={[
-      "mx-auto p-10 pt-18 sm:pt-10",
-      { "max-w-5xl": !oneCol },
-      { "max-w-3xl": oneCol },
+      "mx-auto p-10",
+      "pb-[calc(env(safe-area-inset-bottom)+4rem)] lg:pb-10",
+      "max-w-5xl",
     ]}
   >
-    <div class="fixed top-0 inset-x-0 z-50 group">
-      <div class="hidden sm:block h-2 w-full"></div>
-      <nav
-        class:list={[
-          "mx-auto bg-white/90 backdrop-blur border border-main sm:rounded-full sm:ring-1 transition-transform duration-200",
-          "translate-y-0 sm:-translate-y-full sm:group-hover:translate-y-0",
-          { "max-w-5xl": !oneCol },
-          { "max-w-3xl": oneCol },
-        ]}
-      >
-        <div class="flex items-center gap-4 px-4 py-2">
-          <a
-            href="/"
-            class:list={[
-              "px-2 py-1 rounded-md text-muted hover:text-primary",
-              { "text-main font-semibold": path === "/" },
-            ]}
-            aria-current={path === "/" ? "page" : undefined}
-          >Home</a>
-          <a
-            href="/publications"
-            class:list={[
-              "px-2 py-1 rounded-md text-muted hover:text-primary",
-              { "text-main font-semibold": path.startsWith("/publications") },
-            ]}
-            aria-current={path.startsWith("/publications") ? "page" : undefined}
-          >Publications</a>
-        </div>
-      </nav>
-    </div>
+    <Navbar />
     <div class:list={[
       "sm:hidden mb-12",
       { hidden: path !== "/" },

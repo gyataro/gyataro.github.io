@@ -1,0 +1,79 @@
+---
+import Chevron from "./icons/chevron.astro";
+const path = Astro.url.pathname;
+---
+
+<!-- Desktop, Tablet -->
+<div class="hidden lg:block fixed top-0 inset-x-0 z-50 group">
+    <div class="h-2 w-full"></div>
+    <nav
+    class:list={[
+        "mx-auto bg-white/90 backdrop-blur border border-main sm:rounded-full sm:ring-1 transition-transform duration-200",
+        "translate-y-0 sm:-translate-y-full sm:group-hover:translate-y-0",
+        "max-w-5xl",
+    ]}
+    >
+    <div class="flex items-center gap-4 px-4 py-2">
+        <a
+        href="/"
+        class:list={[
+            "px-2 py-1 rounded-md text-muted hover:text-primary",
+            { "text-main font-semibold": path === "/" },
+        ]}
+        aria-current={path === "/" ? "page" : undefined}
+        >Home</a>
+        <a
+        href="/publications"
+        class:list={[
+            "px-2 py-1 rounded-md text-muted hover:text-primary",
+            { "text-main font-semibold": path.startsWith("/publications") },
+        ]}
+        aria-current={path.startsWith("/publications") ? "page" : undefined}
+        >Publications</a>
+    </div>
+    </nav>
+</div>
+
+<!-- Mobile  -->
+<div class="lg:hidden fixed bottom-0 inset-x-0 z-50">
+    <details class="group mx-auto max-w-5xl">
+        <summary class="list-none w-full">
+          <!--tab -->
+            <div class="w-24 mx-auto px-14 pb-1 pt-2 bg-white backdrop-blur border-t-2 border-x-2 rounded-t-2xl text-main flex items-center justify-center gap-2">
+              <span class="transition-transform group-open:rotate-180">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6" /></svg>
+              </span>  
+              <span>Menu</span>
+            </div>
+            <!--bottom block -->
+            <div class="absolute bg-white w-24 p-14 h-1 left-1/2 -translate-x-1/2"></div>
+            <div class="w-full h-2 bg-white border-t-2 border-black rounded-t-2xl"></div>
+        </summary>
+        <div class="transition-all duration-200 overflow-hidden max-h-0 group-open:max-h-32">
+            <nav class="bg-white backdrop-blur shadow transition-transform duration-200 translate-y-full group-open:translate-y-0">
+                <ul class="flex flex-col px-2 py-2">
+                    <li>
+                        <a
+                        href="/"
+                        class:list={[
+                            "block w-full px-3 py-2 rounded-md text-muted hover:text-primary",
+                            { "text-main font-semibold": path === "/" },
+                        ]}
+                        aria-current={path === "/" ? "page" : undefined}
+                        >Home</a>
+                    </li>
+                    <li>
+                        <a
+                        href="/publications"
+                        class:list={[
+                            "block w-full px-3 py-2 rounded-md text-muted hover:text-primary",
+                            { "text-main font-semibold": path.startsWith("/publications") },
+                        ]}
+                        aria-current={path.startsWith("/publications") ? "page" : undefined}
+                        >Publications</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </details>
+ </div>
