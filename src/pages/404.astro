@@ -1,45 +1,23 @@
 ---
 import { Image } from "astro:assets";
-import BaseHead from "../components/BaseHead.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 import notfound from "../assets/404.jpg"
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { getPageMeta } from "../consts";
 
-interface Props {
-  title?: string;
-  description?: string;
-}
-
-const {
-  title = SITE_TITLE,
-  description = SITE_DESCRIPTION,
-} = Astro.props;
+const { title, description } = getPageMeta(Astro.url.pathname);
 ---
-
-<!doctype html>
-<html id="root" lang="en" class="bg-main">
-  <head>
-    <BaseHead title={title} description={description} />
-  </head>
-  <body
-    class:list={[
-      "mx-auto p-10",
-      "pb-[calc(env(safe-area-inset-bottom)+4rem)] lg:pb-10",
-      "max-w-5xl",
-      "prose"
-    ]}
-  >
-    <figure>
-      <Image 
-          src={notfound}
-          alt="404 Not Found"
-          width={240}
-          densities={[1.5, 2]}
-          loading="eager"
-      />
-    </figure>
-    <figcaption>Fork-tailed Flycatcher (<i>Tyrannus savana</i>).<br/>Plate 168, John J. Audubon's Birds of America.<br/>Courtesy of the John James Audubon Center at Mill Grove, Montgomery County Audubon Collection, and Zebra Publishing</figcaption>
-    <h2 class="mb-1">You've ventured into wilderness...</h2>
-    <a href="/">Back to civilization</a>
-  </body>
-</html>
+<BaseLayout schema={undefined} showNavBar={false} showProfileCard={false}>
+  <figure>
+    <Image 
+        src={notfound}
+        alt="404 Not Found"
+        width={240}
+        densities={[1.5, 2]}
+        loading="eager"
+    />
+  </figure>
+  <figcaption>Fork-tailed Flycatcher (<i>Tyrannus savana</i>).<br/>Plate 168, John J. Audubon's Birds of America.<br/>Courtesy of the John James Audubon Center at Mill Grove, Montgomery County Audubon Collection, and Zebra Publishing</figcaption>
+  <h2 class="mb-1">You've ventured into wilderness...</h2>
+  <a href="/">Back to civilization</a>
+</BaseLayout>
 

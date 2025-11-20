@@ -2,23 +2,24 @@
 import BaseHead from "../components/BaseHead.astro";
 import ProfileCard from "../components/ProfileCard.astro";
 import Navbar from "../components/Navbar.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { getPageMeta } from "../consts";
+
 interface Props {
-  title?: string;
-  description?: string;
+  schema?: Record<string, any>;
+  showNavBar?: boolean;
+  showProfileCard?: boolean;
 }
 
-const {
-  title = SITE_TITLE,
-  description = SITE_DESCRIPTION,
-} = Astro.props;
+const { schema, showNavBar = true, showProfileCard = true } = Astro.props;
+
 const path = Astro.url.pathname;
+const { title, description } = getPageMeta(path);
 ---
 
 <!doctype html>
 <html id="root" lang="en" class="bg-main">
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead title={title} description={description} schema={schema} />
   </head>
   <body
     class:list={[
@@ -27,17 +28,21 @@ const path = Astro.url.pathname;
       "max-w-5xl",
     ]}
   >
-    <Navbar />
-    <div class:list={[
-      "sm:hidden mb-12",
-      { hidden: path !== "/" },
-    ]}>
-      <ProfileCard />
-    </div>
-    <div class="sm:grid sm:grid-cols-3 sm:gap-20">
-      <div class="hidden sm:block mb-12 sm:mb-0 sm:col-span-1 sm:sticky sm:top-12 sm:h-fit">
+    { showNavBar && <Navbar /> }
+    { showProfileCard && (
+      <div class:list={[
+        "sm:hidden mb-12",
+        { hidden: path !== "/" },
+      ]}>
         <ProfileCard />
       </div>
+    )}
+    <div class="sm:grid sm:grid-cols-3 sm:gap-20">
+      { showProfileCard && (
+        <div class="hidden sm:block mb-12 sm:mb-0 sm:col-span-1 sm:sticky sm:top-12 sm:h-fit">
+          <ProfileCard />
+        </div>
+      )}
       <div class="col-span-2 prose">
         <slot />
       </div>

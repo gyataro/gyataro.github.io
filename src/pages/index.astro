@@ -10,9 +10,53 @@ const selectedPublications = publications.filter((p) => p.data.selected);
 
 const awards = await getCollection('awards');
 awards.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {"id": "https://xiwen.me", "name": "About Me"}
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {"id": "https://xiwen.me/publications", "name": "Publications"}
+      }
+    ]
+  },
+  "name": "Xiwen Teoh - Personal Website",
+  "url": "https://xiwen.me",
+  "mainEntity": {
+    "@type": "Person",
+    "name": "Xiwen Teoh",
+    "url": "https://xiwen.me",
+    "image": "https://xiwen.me/profile.jpg",
+    "jobTitle": "PhD Student",
+    "affiliation": {
+      "@type": "Organization",
+      "name": "National University of Singapore",
+      "url": "https://www.nus.edu.sg"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/in/xiwenteoh/",
+      "https://github.com/gyataro"
+    ],
+    "email": "xiwen.teoh@nus.edu.sg",
+    "knowsAbout": [
+      "GUI Testing",
+      "Web Security",
+      "AI Agents"
+    ] 
+  }
+}
 ---
 
-<BaseLayout>
+<BaseLayout schema={schema}>
   <h2 class="mb-1">About me</h2>
   <p>
     Hello, I'm Xiwen, a PhD student in Computer Science. 
