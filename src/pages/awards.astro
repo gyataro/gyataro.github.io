@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Award from "../components/Award.astro";
+import { getCollection } from 'astro:content';
+
+const awards = await getCollection('awards');
+awards.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+<BaseLayout>
+  <h2 class="mb-1">Awards</h2>
+  <p>A complete list of awards and recognition I have received.</p>
+  <div class="not-prose flex flex-col gap-3">
+    {awards.map(({ data }) => (
+      <Award title={data.title} date={data.date} />
+    ))}
+  </div>
+</BaseLayout>

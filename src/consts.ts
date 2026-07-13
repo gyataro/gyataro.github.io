@@ -15,6 +15,10 @@ export const PAGE_META: Record<string, { title: string; description: string }> =
   '/publications': {
     title: 'Publications • Xiwen Teoh',
     description: 'Complete list of publications by Xiwen Teoh.',
+  },
+  '/awards': {
+    title: 'Awards • Xiwen Teoh',
+    description: 'Awards and recognition received by Xiwen Teoh.',
   }
 }
 

@@ -29,6 +29,14 @@ const path = Astro.url.pathname;
         ]}
         aria-current={path.startsWith("/publications") ? "page" : undefined}
         >Publications</a>
+        <a
+        href="/awards"
+        class:list={[
+            "px-2 py-1 rounded-md text-muted hover:text-primary",
+            { "text-main font-semibold": path.startsWith("/awards") },
+        ]}
+        aria-current={path.startsWith("/awards") ? "page" : undefined}
+        >Awards</a>
     </div>
     </nav>
 </div>
