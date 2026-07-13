@@ -10,5 +10,6 @@ export default defineConfig({
   integrations: [sitemap()],
   devToolbar: {
     enabled: false
-  }
+  },
+  compressHTML: true,
 })
