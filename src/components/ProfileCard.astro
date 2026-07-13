@@ -10,12 +10,13 @@ import { SCHOLAR_LINK, LINKEDIN_LINK, GITHUB_LINK, EMAIL_LINK, NAME } from "../c
 ---
 
 <div class="flex flex-col gap-4">
-    <Image 
+    <Image
         src={profile}
         alt="My profile picture"
         width={240}
         densities={[1.5, 2]}
         loading="eager"
+        class="ring-6 ring-white"
     />
     <div>
         <h1 class="mb-1 text-3xl font-bold text-main">{NAME}</h1>
