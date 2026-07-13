@@ -23,12 +23,11 @@ const { title, description } = getPageMeta(path);
   </head>
   <body
     class:list={[
-      "mx-auto p-10",
-      "pb-[calc(env(safe-area-inset-bottom)+4rem)] lg:pb-10",
-      "max-w-5xl",
+      "mx-auto p-10 max-w-5xl",
     ]}
   >
     { showNavBar && <Navbar /> }
+    { showNavBar && <div class="h-12" aria-hidden="true" /> }
     { showProfileCard && (
       <div class:list={[
         "sm:hidden mb-12",
@@ -39,7 +38,7 @@ const { title, description } = getPageMeta(path);
     )}
     <div class="sm:grid sm:grid-cols-3 sm:gap-20">
       { showProfileCard && (
-        <div class="hidden sm:block mb-12 sm:mb-0 sm:col-span-1 sm:sticky sm:top-10 sm:h-fit">
+        <div class="hidden sm:block mb-12 sm:mb-0 sm:col-span-1 sm:sticky sm:top-[5.5rem] sm:h-fit">
           <ProfileCard />
         </div>
       )}

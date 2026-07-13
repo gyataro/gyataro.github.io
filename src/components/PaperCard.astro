@@ -21,13 +21,15 @@ interface Props {
 const { title, venue, authors, me = NAME, cofirst, corresponding, links } = Astro.props
 const meIndex = me ? authors.findIndex(a => a.toLowerCase() === me.toLowerCase()) : -1
 const hasLinks = links?.paper || links?.website || links?.code
+const venueNorm = venue?.trim().toLowerCase()
+const showVenue = venueNorm && venueNorm !== 'preprint' && venueNorm !== 'arxiv'
 ---
 
 <div class="bg-muted border border-main rounded-md px-4 py-3 flex flex-col gap-1.5 hover:bg-hover transition-colors">
   <p class="text-main font-semibold text-sm leading-snug">{title}</p>
   <p class="text-xs text-muted leading-relaxed">{authors.map((a, i) => <><span class:list={[i === meIndex ? "font-bold text-indigo-700" : ""]}>{a}{i === meIndex && (cofirst || corresponding) ? <sup class="text-[10px]">{cofirst ? "*" : ""}{corresponding ? "#" : ""}</sup> : null}</span>{i < authors.length - 1 ? ", " : ""}</>)}</p>
   <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
-    <span class="text-xs font-medium text-muted">{venue}</span>
+    {showVenue && <span class="text-xs font-medium text-muted">{venue}</span>}
     {hasLinks && (
       <div class="flex items-center gap-3 ml-auto">
         {links?.paper && (

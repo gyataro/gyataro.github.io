@@ -73,10 +73,7 @@ const schema = {
 <BaseLayout schema={schema}>
   <h2 class="mb-1">About me</h2>
   <p>
-    Hello, I'm Xiwen, a PhD candidate in Computer Science. 
-  </p>
-  <p>
-    I am jointly advised by
+    I am a 2nd year PhD candidate jointly advised by
     <a href="https://www.comp.nus.edu.sg/~dongjs/" target="_blank">Prof. Jin Song Dong</a> at the Programming Languages and Software Engineering (PLSE) Lab 
     under National University of Singapore (NUS),
     and by <a href="http://linyun.info/" target="_blank">Prof. Yun Lin</a> at the CoPhi Research Group
@@ -89,38 +86,4 @@ const schema = {
     and for <b>testing graphical user interfaces (GUI)</b>, by verifying that the symbols conform to expectations. 
     Lately, I work with multimodal language model (MLLM) agents.
   </p>
-
-  <h2 class="mb-1">Publications</h2>
-  <p>This is a selected list of recent publications central to my research. You can <a href="/publications">check the full list here</a>.</p>
-  <p>(*): Co-first author</p>
-  <div class="not-prose flex flex-col gap-8">
-    {selectedYears.map((yr) => (
-      <div class="flex flex-col gap-3">
-        <p class="text-sm font-semibold text-muted uppercase tracking-wider">{yr}</p>
-        {selectedByYear.get(yr)?.map(({ data }) => (
-          <PaperCard
-            title={data.title}
-            venue={data.venue}
-            authors={data.authors}
-            me={data.me}
-            cofirst={data.cofirst}
-            corresponding={data.corresponding}
-            links={data.links}
-          />
-        ))}
-      </div>
-    ))}
-  </div>
-
-  <h2 class="mb-1">Awards</h2>
-  <div class="not-prose flex flex-col gap-8">
-    {awardYears.map((yr) => (
-      <div class="flex flex-col gap-3">
-        <p class="text-sm font-semibold text-muted uppercase tracking-wider">{yr}</p>
-        {awardsByYear.get(yr)?.map(({ data }) => (
-          <Award title={data.title} source={data.source} />
-        ))}
-      </div>
-    ))}
-  </div>
 </BaseLayout>

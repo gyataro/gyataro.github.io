@@ -11,7 +11,7 @@ authors:
   - Wenjie Zhang
   - Jin Song Dong
 links:
-  paper: https://arxiv.org
+  paper: https://dl.acm.org/doi/10.1145/3797115
   website: https://sites.google.com/view/webtestpilot
   code: https://github.com/code-philia/WebTestPilot
 selected: true
