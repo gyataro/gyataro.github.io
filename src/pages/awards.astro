@@ -5,13 +5,26 @@ import { getCollection } from 'astro:content';
 
 const awards = await getCollection('awards');
 awards.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const awardYears = Array.from(new Set(awards.map(a => a.data.date.getFullYear()))).sort((a, b) => b - a);
+const awardsByYear = new Map<number, typeof awards>();
+for (const award of awards) {
+  const yr = award.data.date.getFullYear();
+  if (!awardsByYear.has(yr)) awardsByYear.set(yr, []);
+  awardsByYear.get(yr)!.push(award);
+}
 ---
 <BaseLayout>
   <h2 class="mb-1">Awards</h2>
   <p>A complete list of awards and recognition I have received.</p>
-  <div class="not-prose flex flex-col gap-3">
-    {awards.map(({ data }) => (
-      <Award title={data.title} date={data.date} />
+  <div class="not-prose flex flex-col gap-8">
+    {awardYears.map((yr) => (
+      <div class="flex flex-col gap-3">
+        <p class="text-sm font-semibold text-muted uppercase tracking-wider">{yr}</p>
+        {awardsByYear.get(yr)?.map(({ data }) => (
+          <Award title={data.title} source={data.source} />
+        ))}
+      </div>
     ))}
   </div>
 </BaseLayout>

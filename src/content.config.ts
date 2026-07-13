@@ -28,6 +28,7 @@ const awards = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/awards' }),
   schema: z.object({
     title: z.string(),
+    source: z.string(),
     date: z.coerce.date(),
   }),
 });

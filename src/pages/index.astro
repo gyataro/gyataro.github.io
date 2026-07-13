@@ -7,9 +7,23 @@ import { getCollection } from 'astro:content';
 const publications = await getCollection('publications');
 publications.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 const selectedPublications = publications.filter((p) => p.data.selected);
+const selectedYears = Array.from(new Set(selectedPublications.map(p => p.data.year))).sort((a, b) => b - a);
+const selectedByYear = new Map<number, typeof selectedPublications>();
+for (const pub of selectedPublications) {
+  const yr = pub.data.year;
+  if (!selectedByYear.has(yr)) selectedByYear.set(yr, []);
+  selectedByYear.get(yr)!.push(pub);
+}
 
 const awards = await getCollection('awards');
 awards.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const awardYears = Array.from(new Set(awards.map(a => a.data.date.getFullYear()))).sort((a, b) => b - a);
+const awardsByYear = new Map<number, typeof awards>();
+for (const award of awards) {
+  const yr = award.data.date.getFullYear();
+  if (!awardsByYear.has(yr)) awardsByYear.set(yr, []);
+  awardsByYear.get(yr)!.push(award);
+}
 
 const schema = {
   "@context": "https://schema.org",
@@ -79,25 +93,34 @@ const schema = {
   <h2 class="mb-1">Publications</h2>
   <p>This is a selected list of recent publications central to my research. You can <a href="/publications">check the full list here</a>.</p>
   <p>(*): Co-first author</p>
-  <div class="not-prose flex flex-col gap-3">
-    {selectedPublications.map(({ data }) => (
-      <PaperCard
-        title={data.title}
-        venue={data.venue}
-        year={data.year}
-        authors={data.authors}
-        me={data.me}
-        cofirst={data.cofirst}
-        corresponding={data.corresponding}
-        links={data.links}
-      />
+  <div class="not-prose flex flex-col gap-8">
+    {selectedYears.map((yr) => (
+      <div class="flex flex-col gap-3">
+        <p class="text-sm font-semibold text-muted uppercase tracking-wider">{yr}</p>
+        {selectedByYear.get(yr)?.map(({ data }) => (
+          <PaperCard
+            title={data.title}
+            venue={data.venue}
+            authors={data.authors}
+            me={data.me}
+            cofirst={data.cofirst}
+            corresponding={data.corresponding}
+            links={data.links}
+          />
+        ))}
+      </div>
     ))}
   </div>
 
   <h2 class="mb-1">Awards</h2>
-  <div class="not-prose flex flex-col gap-3">
-    {awards.map(({ data }) => (
-      <Award title={data.title} date={data.date} />
+  <div class="not-prose flex flex-col gap-8">
+    {awardYears.map((yr) => (
+      <div class="flex flex-col gap-3">
+        <p class="text-sm font-semibold text-muted uppercase tracking-wider">{yr}</p>
+        {awardsByYear.get(yr)?.map(({ data }) => (
+          <Award title={data.title} source={data.source} />
+        ))}
+      </div>
     ))}
   </div>
 </BaseLayout>

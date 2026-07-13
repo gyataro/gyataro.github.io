@@ -18,6 +18,13 @@ const yearCounts = publications.reduce((acc, p) => {
   acc[y] = (acc[y] || 0) + 1;
   return acc;
 }, {});
+
+const pubsByYear = new Map<number, typeof publications>();
+for (const pub of publications) {
+  const yr = pub.data.year;
+  if (!pubsByYear.has(yr)) pubsByYear.set(yr, []);
+  pubsByYear.get(yr)!.push(pub);
+}
 ---
 <BaseLayout>
   <h2 class="mb-1">Publications</h2>
@@ -45,20 +52,24 @@ const yearCounts = publications.reduce((acc, p) => {
     </select>
   </label>
   </div>
-  <!-- Publication list; each item carries facet data attributes -->
-  <div id="pubList" class="not-prose flex flex-col gap-3">
-  {publications.map(({ data }) => (
-    <div class="pub-item" data-venue={data.venue} data-year={String(data.year)}>
+  <!-- Publication list grouped by year; each item carries facet data attributes -->
+  <div id="pubList" class="not-prose flex flex-col gap-8">
+  {years.map((yr) => (
+    <div class="year-section flex flex-col gap-3" data-year={String(yr)}>
+      <p class="text-sm font-semibold text-muted uppercase tracking-wider">{yr}</p>
+      {pubsByYear.get(yr)?.map(({ data }) => (
+        <div class="pub-item" data-venue={data.venue} data-year={String(data.year)}>
           <PaperCard
             title={data.title}
             venue={data.venue}
-            year={data.year}
             authors={data.authors}
             me={data.me}
             cofirst={data.cofirst}
             corresponding={data.corresponding}
             links={data.links}
           />
+        </div>
+      ))}
     </div>
   ))}
   </div>
@@ -122,6 +133,11 @@ const yearCounts = publications.reduce((acc, p) => {
         el.classList.toggle('hidden', !match)
       })
       updateCounts()
+      // Hide year sections that have no visible cards after filtering
+      document.querySelectorAll('#pubList .year-section').forEach(section => {
+        const hasVisible = Array.from(section.querySelectorAll('.pub-item')).some(el => !el.classList.contains('hidden'))
+        section.classList.toggle('hidden', !hasVisible)
+      })
     }
 
     // Wire events and initialize counts on page load

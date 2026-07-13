@@ -7,7 +7,6 @@ import { NAME } from "../consts"
 interface Props {
   title: string
   venue: string
-  year: string | number
   authors: string[]
   me?: string
   cofirst?: boolean
@@ -19,56 +18,37 @@ interface Props {
   }
 }
 
-const { title, venue, year, authors, me = NAME, cofirst, corresponding, links } = Astro.props
+const { title, venue, authors, me = NAME, cofirst, corresponding, links } = Astro.props
 const meIndex = me ? authors.findIndex(a => a.toLowerCase() === me.toLowerCase()) : -1
+const hasLinks = links?.paper || links?.website || links?.code
 ---
-<details class="group bg-muted border border-main rounded-md shadow-sm hover:bg-hover transition-colors">
-  <summary class="list-none cursor-pointer p-4 flex flex-col gap-2 focus:outline-none focus:ring-2 focus:ring-primary/40 rounded-md">
-    <div class="flex items-center text-sm font-semibold">
-      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 ring-1 ring-indigo-200">
-        {venue} • {year}
-      </span>
-    </div>
-    <h3 class="text-main font-semibold">{title}</h3>
-    <div class="text-sm text-muted flex flex-wrap items-baseline gap-x-2 gap-y-1">
-      {authors.map((a, i) => (
-        <>
-          <span class:list={[ i === meIndex ? "font-semibold text-main text-indigo-700" : "" ]}>
-            {a}
-            {i === meIndex && (cofirst || corresponding) ? (
-              <span class="-ml-1 text-xs align-super">{`${cofirst ? "*" : ""}${corresponding ? "#" : ""}`}</span>
-            ) : null}
-          </span>
-          {i < authors.length - 1 ? (<span class="text-muted">•</span>) : null}
-        </>
-      ))}
-    </div>
-    <div class="mt-2 flex items-center gap-2 text-xs text-muted">
-      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-open:rotate-180"><path d="M6 9l6 6 6-6" /></svg>
-      <span class="group-open:hidden">Show details</span>
-      <span class="hidden group-open:inline">Hide details</span>
-    </div>
-  </summary>
-  <div class="px-4 py-4 flex flex-col gap-3 border-t border-main/30">
-    <div class="flex flex-wrap gap-2">
-      {links?.paper && (
-        <a href={links.paper} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full ring-1 ring-gray-200 text-gray-700 hover:bg-gray-50 hover:ring-gray-300">
-          <PaperIcon />
-          <span class="text-sm">Paper</span>
-        </a>
-      )}
-      {links?.website && (
-        <a href={links.website} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full ring-1 ring-gray-200 text-gray-700 hover:bg-gray-50 hover:ring-gray-300">
-          <WebsiteIcon />
-          <span class="text-sm">Website</span>
-        </a>
-      )}
-      {links?.code && (
-        <a href={links.code} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full ring-1 ring-gray-200 text-gray-700 hover:bg-gray-50 hover:ring-gray-300">
-          <CodeIcon />
-          <span class="text-sm">Code</span>
-        </a>
-      )}
-    </div>
+
+<div class="bg-muted border border-main rounded-md px-4 py-3 flex flex-col gap-1.5 hover:bg-hover transition-colors">
+  <p class="text-main font-semibold text-sm leading-snug">{title}</p>
+  <p class="text-xs text-muted leading-relaxed">{authors.map((a, i) => <><span class:list={[i === meIndex ? "font-bold text-indigo-700" : ""]}>{a}{i === meIndex && (cofirst || corresponding) ? <sup class="text-[10px]">{cofirst ? "*" : ""}{corresponding ? "#" : ""}</sup> : null}</span>{i < authors.length - 1 ? ", " : ""}</>)}</p>
+  <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
+    <span class="text-xs font-medium text-muted">{venue}</span>
+    {hasLinks && (
+      <div class="flex items-center gap-3 ml-auto">
+        {links?.paper && (
+          <a href={links.paper} target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-1 text-xs text-muted hover:text-primary transition-colors">
+            <PaperIcon /><span>Paper</span>
+          </a>
+        )}
+        {links?.website && (
+          <a href={links.website} target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-1 text-xs text-muted hover:text-primary transition-colors">
+            <WebsiteIcon /><span>Site</span>
+          </a>
+        )}
+        {links?.code && (
+          <a href={links.code} target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-1 text-xs text-muted hover:text-primary transition-colors">
+            <CodeIcon /><span>Code</span>
+          </a>
+        )}
+      </div>
+    )}
   </div>
-</details>
+</div>

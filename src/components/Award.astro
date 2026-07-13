@@ -1,14 +1,12 @@
 ---
 interface Props {
-    title: string
-    date: Date
+  title: string
+  source: string
 }
 
-const { title, date } = Astro.props
-
-const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+const { title, source } = Astro.props
 ---
-<div class="flex justify-between w-full gap-4 items-start text-main">
-    <p class="flex-1">{title}</p>
-    <p class="shrink-0 text-nowrap text-end text-muted text-sm">{dateString}</p>
+<div class="bg-muted border border-main rounded-md px-4 py-3 flex flex-col gap-1.5 hover:bg-hover transition-colors">
+  <p class="text-main font-semibold text-sm leading-snug">{title}</p>
+  <p class="text-xs font-medium text-muted">{source}</p>
 </div>
