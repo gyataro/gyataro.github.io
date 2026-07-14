@@ -1,29 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PaperCard from "../components/PaperCard.astro";
-import Award from "../components/Award.astro";
-import { getCollection } from 'astro:content';
-
-const publications = await getCollection('publications');
-publications.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-const selectedPublications = publications.filter((p) => p.data.selected);
-const selectedYears = Array.from(new Set(selectedPublications.map(p => p.data.year))).sort((a, b) => b - a);
-const selectedByYear = new Map<number, typeof selectedPublications>();
-for (const pub of selectedPublications) {
-  const yr = pub.data.year;
-  if (!selectedByYear.has(yr)) selectedByYear.set(yr, []);
-  selectedByYear.get(yr)!.push(pub);
-}
-
-const awards = await getCollection('awards');
-awards.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-const awardYears = Array.from(new Set(awards.map(a => a.data.date.getFullYear()))).sort((a, b) => b - a);
-const awardsByYear = new Map<number, typeof awards>();
-for (const award of awards) {
-  const yr = award.data.date.getFullYear();
-  if (!awardsByYear.has(yr)) awardsByYear.set(yr, []);
-  awardsByYear.get(yr)!.push(award);
-}
 
 const schema = {
   "@context": "https://schema.org",
@@ -82,8 +58,7 @@ const schema = {
 
   <p>
     My research addresses a core challenge in human-agent interaction: <b>how to make software agents capable and reliable
-    in real-world digital environments</b>. I design agents that understand and interact with graphical user interfaces 
-    by grounding what they see on the interface in structured representations for reasoning. I apply this work to <b>web security 
-    and software testing</b>, where agents help detect threats, uncover bugs, and verify that interfaces behave as intended.
+    in real-world digital environments</b>. I design agents that reason about graphical user interfaces by grounding visual information in structured representations.
+    I apply this work to <b>Internet security and software testing</b>, where agents help detect threats, uncover bugs, and verify that interfaces behave as intended.
   </p>
 </BaseLayout>

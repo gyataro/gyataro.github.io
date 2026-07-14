@@ -2,9 +2,6 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import notfound from "../assets/404.jpg"
-import { getPageMeta } from "../consts";
-
-const { title, description } = getPageMeta(Astro.url.pathname);
 ---
 <BaseLayout schema={undefined} showNavBar={false} showProfileCard={false}>
   <figure>

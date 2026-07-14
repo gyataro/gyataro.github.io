@@ -12,12 +12,12 @@ const venueCounts = publications.reduce((acc, p) => {
   const v = p.data.venue;
   acc[v] = (acc[v] || 0) + 1;
   return acc;
-}, {});
+}, {} as Record<string, number>);
 const yearCounts = publications.reduce((acc, p) => {
   const y = String(p.data.year);
   acc[y] = (acc[y] || 0) + 1;
   return acc;
-}, {});
+}, {} as Record<string, number>);
 
 const pubsByYear = new Map<number, typeof publications>();
 for (const pub of publications) {
@@ -28,13 +28,13 @@ for (const pub of publications) {
 ---
 <BaseLayout>
   <h2 class="mb-1">Publications</h2>
-  <p>This is a complete list of my publications. (*): Co-first author</p>
+  <p>A complete list of my publications. (*): Co-first author</p>
   <!-- Filters: venue and year selectors with dynamic counts -->
   <div class="not-prose mb-4 flex flex-wrap gap-3 items-center">
   <!-- Venue filter -->
   <label class="flex items-center gap-2 text-sm">
     <span class="text-muted">Venue</span>
-    <select id="venueFilter" class="px-2 py-1 rounded-md border border-main bg-muted text-main">
+    <select id="venueFilter" class="px-2 py-1 rounded-md border border-line bg-surface text-main">
       <option value="" data-label="All">All ({publications.length})</option>
       {venues.map((v) => (
         <option value={v} data-label={v}>{v} ({venueCounts[v] ?? 0})</option>
@@ -44,7 +44,7 @@ for (const pub of publications) {
   <!-- Year filter -->
   <label class="flex items-center gap-2 text-sm">
     <span class="text-muted">Year</span>
-    <select id="yearFilter" class="px-2 py-1 rounded-md border border-main bg-muted text-main">
+    <select id="yearFilter" class="px-2 py-1 rounded-md border border-line bg-surface text-main">
       <option value="" data-label="All">All ({publications.length})</option>
       {years.map((y) => (
         <option value={String(y)} data-label={String(y)}>{y} ({yearCounts[String(y)] ?? 0})</option>
@@ -75,23 +75,30 @@ for (const pub of publications) {
   </div>
   <script>
     // Collect publication items to filter
-    const items = Array.from(document.querySelectorAll('#pubList .pub-item'))
+    const items = Array.from(document.querySelectorAll<HTMLElement>('#pubList .pub-item'))
+
+    type Facet = {
+      id: string
+      select: HTMLSelectElement
+      getValue: (el: HTMLElement) => string | undefined
+    }
+
     // Facet configuration: add new entries here to support more filters
-    const facets = [
+    const facets: Facet[] = [
       {
         id: 'venue',
-        select: document.getElementById('venueFilter'),
+        select: document.getElementById('venueFilter') as HTMLSelectElement,
         getValue: (el) => el.dataset.venue,
       },
       {
         id: 'year',
-        select: document.getElementById('yearFilter'),
+        select: document.getElementById('yearFilter') as HTMLSelectElement,
         getValue: (el) => el.dataset.year,
       },
     ]
 
     // Read current selected values across all facets
-    function currentState() {
+    function currentState(): Record<string, string> {
       return Object.fromEntries(facets.map(f => [f.id, f.select.value]))
     }
 
@@ -102,18 +109,18 @@ for (const pub of publications) {
         const pool = items.filter(el => {
           return Object.entries(otherState).every(([id, val]) => {
             if (!val) return true
-            const fac = facets.find(ff => ff.id === id)
+            const fac = facets.find(ff => ff.id === id)!
             return fac.getValue(el) === val
           })
         })
-        const tally = {}
+        const tally: Record<string, number> = {}
         pool.forEach(el => {
           const v = facet.getValue(el)
-          tally[v] = (tally[v] || 0) + 1
+          if (v) tally[v] = (tally[v] || 0) + 1
         })
         // Update labels and hide options that have zero count (except selected and All)
         Array.from(facet.select.options).forEach(opt => {
-          const base = opt.dataset.label || opt.textContent.replace(/\s*\(\d+\)\s*$/, '')
+          const base = opt.dataset.label || opt.textContent?.replace(/\s*\(\d+\)\s*$/, '') || ''
           opt.dataset.label = base
           const c = opt.value === '' ? pool.length : (tally[opt.value] || 0)
           opt.textContent = `${base} (${c})`

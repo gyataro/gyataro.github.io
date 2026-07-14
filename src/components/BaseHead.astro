@@ -40,5 +40,5 @@ const { title, description, schema } = Astro.props;
 <meta property="twitter:description" content={description} />
 
 { schema && (
-  <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline></script>
 )}

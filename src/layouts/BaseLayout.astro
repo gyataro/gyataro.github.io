@@ -3,7 +3,7 @@ import BaseHead from "../components/BaseHead.astro";
 import ProfileCard from "../components/ProfileCard.astro";
 import Navbar from "../components/Navbar.astro";
 import { getPageMeta } from "../consts";
-import bannerImg from "../assets/banner.jpg";
+import bannerImg from "../assets/banner.png";
 
 interface Props {
   schema?: Record<string, any>;
@@ -18,7 +18,7 @@ const { title, description } = getPageMeta(path);
 ---
 
 <!doctype html>
-<html id="root" lang="en" class="bg-main">
+<html id="root" lang="en" class="bg-white">
   <head>
     <BaseHead title={title} description={description} schema={schema} />
   </head>
@@ -27,7 +27,18 @@ const { title, description } = getPageMeta(path);
     { showNavBar && <div class="h-12" aria-hidden="true" /> }
 
     { path === "/" && (
-      <div class="absolute inset-x-0 top-12 h-48 opacity-30" style={`background-image: url(${bannerImg.src}); background-repeat: repeat; background-size: 195px;`} aria-hidden="true" />
+      <>
+        <div
+          id="hero-banner"
+          data-src={bannerImg.src}
+          class="absolute inset-x-0 top-12 h-48 opacity-0 transition-opacity duration-700 ease-out"
+          style={`background-image: url(${bannerImg.src}); background-repeat: repeat; background-size: 195px;`}
+          aria-hidden="true"
+        />
+        <noscript>
+          <style>#hero-banner { opacity: 0.3 !important; }</style>
+        </noscript>
+      </>
     )}
 
     { showProfileCard && (
@@ -49,5 +60,17 @@ const { title, description } = getPageMeta(path);
         <slot />
       </div>
     </div>
+
+    { path === "/" && (
+      <script>
+        const banner = document.getElementById("hero-banner")
+        const src = banner?.dataset.src
+        if (banner && src) {
+          const img = new Image()
+          img.onload = () => banner.classList.replace("opacity-0", "opacity-30")
+          img.src = src
+        }
+      </script>
+    )}
   </body>
 </html>

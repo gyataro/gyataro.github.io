@@ -13,8 +13,8 @@ authors:
   - Hongyu Zhang
   - Jin Song Dong
 links:
-  paper: http://linyun.info/publications/icse26.pdf
+  paper: https://arxiv.org/abs/2512.06906
   website: https://sites.google.com/view/mines-anomaly-detection/home
-  code: https://github.com/anonymous19207538/repo
+  code: https://github.com/code-philia/MINES-Anomaly-Detection
 selected: false
 ---

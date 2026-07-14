@@ -14,8 +14,8 @@ authors:
   - Hongyu Zhang
   - Jin Song Dong
 links:
-  paper: https://jasonbourne1998.github.io/data/ASE24.pdf
+  paper: https://dl.acm.org/doi/10.1145/3691620.3695024
   website: https://sites.google.com/view/webnorm/overview
-  code: https://github.com/JasonBourne1998/TamperLogPrompt
+  code: https://zenodo.org/records/13753186
 selected: false
 ---
