@@ -1,26 +1,28 @@
 ---
 const path = Astro.url.pathname;
+
+const NAV_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/publications", label: "Publications" },
+  { href: "/awards", label: "Awards" },
+] as const
+
+function isActive(href: string) {
+  return href === "/" ? path === "/" : path.startsWith(href)
+}
 ---
 
 <header class="fixed top-0 inset-x-0 z-50 bg-slate-900/95 backdrop-blur border-b border-slate-700">
   <div class="mx-auto max-w-5xl px-10 h-12 flex items-center">
     <!-- Desktop links -->
     <nav class="hidden sm:flex items-center gap-2" aria-label="Main navigation">
-      <a
-        href="/"
-        class:list={["px-2 py-1 text-sm transition-colors hover:text-white", { "text-white font-semibold": path === "/", "text-slate-400": path !== "/" }]}
-        aria-current={path === "/" ? "page" : undefined}
-      >Home</a>
-      <a
-        href="/publications"
-        class:list={["px-2 py-1 text-sm transition-colors hover:text-white", { "text-white font-semibold": path.startsWith("/publications"), "text-slate-400": !path.startsWith("/publications") }]}
-        aria-current={path.startsWith("/publications") ? "page" : undefined}
-      >Publications</a>
-      <a
-        href="/awards"
-        class:list={["px-2 py-1 text-sm transition-colors hover:text-white", { "text-white font-semibold": path.startsWith("/awards"), "text-slate-400": !path.startsWith("/awards") }]}
-        aria-current={path.startsWith("/awards") ? "page" : undefined}
-      >Awards</a>
+      {NAV_LINKS.map(({ href, label }) => (
+        <a
+          href={href}
+          class:list={["px-2 py-1 text-sm transition-colors hover:text-white", { "text-white font-semibold": isActive(href), "text-slate-400": !isActive(href) }]}
+          aria-current={isActive(href) ? "page" : undefined}
+        >{label}</a>
+      ))}
     </nav>
 
     <!-- Mobile hamburger button -->
@@ -48,21 +50,13 @@ const path = Astro.url.pathname;
     aria-label="Mobile navigation"
   >
     <div class="mx-auto max-w-5xl px-10 py-3 flex flex-col">
-      <a
-        href="/"
-        class:list={["px-2 py-2 text-sm transition-colors hover:text-white", { "text-white font-semibold": path === "/", "text-slate-400": path !== "/" }]}
-        aria-current={path === "/" ? "page" : undefined}
-      >Home</a>
-      <a
-        href="/publications"
-        class:list={["px-2 py-2 text-sm transition-colors hover:text-white", { "text-white font-semibold": path.startsWith("/publications"), "text-slate-400": !path.startsWith("/publications") }]}
-        aria-current={path.startsWith("/publications") ? "page" : undefined}
-      >Publications</a>
-      <a
-        href="/awards"
-        class:list={["px-2 py-2 text-sm transition-colors hover:text-white", { "text-white font-semibold": path.startsWith("/awards"), "text-slate-400": !path.startsWith("/awards") }]}
-        aria-current={path.startsWith("/awards") ? "page" : undefined}
-      >Awards</a>
+      {NAV_LINKS.map(({ href, label }) => (
+        <a
+          href={href}
+          class:list={["px-2 py-2 text-sm transition-colors hover:text-white", { "text-white font-semibold": isActive(href), "text-slate-400": !isActive(href) }]}
+          aria-current={isActive(href) ? "page" : undefined}
+        >{label}</a>
+      ))}
     </div>
   </nav>
 </header>

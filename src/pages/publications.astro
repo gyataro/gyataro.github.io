@@ -1,13 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PaperCard from "../components/PaperCard.astro";
-import { getCollection } from 'astro:content';
+import { getSortedPublications, groupByYear } from "../lib/collections";
 
-const publications = await getCollection('publications');
-publications.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const publications = await getSortedPublications();
 
 const venues = Array.from(new Set(publications.map((p) => p.data.venue))).sort((a, b) => a.localeCompare(b));
-const years = Array.from(new Set(publications.map((p) => p.data.year))).sort((a, b) => Number(b) - Number(a));
 const venueCounts = publications.reduce((acc, p) => {
   const v = p.data.venue;
   acc[v] = (acc[v] || 0) + 1;
@@ -19,12 +17,8 @@ const yearCounts = publications.reduce((acc, p) => {
   return acc;
 }, {} as Record<string, number>);
 
-const pubsByYear = new Map<number, typeof publications>();
-for (const pub of publications) {
-  const yr = pub.data.year;
-  if (!pubsByYear.has(yr)) pubsByYear.set(yr, []);
-  pubsByYear.get(yr)!.push(pub);
-}
+const pubsByYear = groupByYear(publications, (p) => p.data.year);
+const years = Array.from(pubsByYear.keys()).sort((a, b) => b - a);
 ---
 <BaseLayout>
   <h2 class="mb-1">Publications</h2>

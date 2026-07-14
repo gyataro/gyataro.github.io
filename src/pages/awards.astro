@@ -1,18 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Award from "../components/Award.astro";
-import { getCollection } from 'astro:content';
+import { getSortedAwards, groupByYear } from "../lib/collections";
 
-const awards = await getCollection('awards');
-awards.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-
-const awardYears = Array.from(new Set(awards.map(a => a.data.date.getFullYear()))).sort((a, b) => b - a);
-const awardsByYear = new Map<number, typeof awards>();
-for (const award of awards) {
-  const yr = award.data.date.getFullYear();
-  if (!awardsByYear.has(yr)) awardsByYear.set(yr, []);
-  awardsByYear.get(yr)!.push(award);
-}
+const awards = await getSortedAwards();
+const awardsByYear = groupByYear(awards, (a) => a.data.date.getFullYear());
+const awardYears = Array.from(awardsByYear.keys()).sort((a, b) => b - a);
 ---
 <BaseLayout>
   <h2 class="mb-1">Awards</h2>

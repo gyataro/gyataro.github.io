@@ -2,6 +2,7 @@
 import PaperIcon from "./icons/paper.astro"
 import WebsiteIcon from "./icons/website.astro"
 import CodeIcon from "./icons/code.astro"
+import Card from "./Card.astro"
 import { NAME } from "../consts"
 
 interface Props {
@@ -25,7 +26,7 @@ const venueNorm = venue?.trim().toLowerCase()
 const showVenue = venueNorm && venueNorm !== 'preprint' && venueNorm !== 'arxiv'
 ---
 
-<div class="bg-surface border border-line rounded-md px-4 py-3 flex flex-col gap-1.5 hover:bg-surface-hover transition-colors">
+<Card>
   <p class="text-main font-semibold text-sm leading-snug">{title}</p>
   <p class="text-xs text-muted leading-relaxed">{authors.map((a, i) => {
     const marker = (cofirst && (i === 0 || i === 1) ? "*" : "") + (i === meIndex && corresponding ? "#" : "")
@@ -56,4 +57,4 @@ const showVenue = venueNorm && venueNorm !== 'preprint' && venueNorm !== 'arxiv'
       </div>
     )}
   </div>
-</div>
+</Card>
