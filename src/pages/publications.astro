@@ -68,81 +68,92 @@ const years = Array.from(pubsByYear.keys()).sort((a, b) => b - a);
   ))}
   </div>
   <script>
-    // Collect publication items to filter
-    const items = Array.from(document.querySelectorAll<HTMLElement>('#pubList .pub-item'))
-
     type Facet = {
       id: string
       select: HTMLSelectElement
       getValue: (el: HTMLElement) => string | undefined
     }
 
-    // Facet configuration: add new entries here to support more filters
-    const facets: Facet[] = [
-      {
-        id: 'venue',
-        select: document.getElementById('venueFilter') as HTMLSelectElement,
-        getValue: (el) => el.dataset.venue,
-      },
-      {
-        id: 'year',
-        select: document.getElementById('yearFilter') as HTMLSelectElement,
-        getValue: (el) => el.dataset.year,
-      },
-    ]
+    // Astro dedupes identical inline scripts across view-transition
+    // navigations, so this body only runs once ever — but the listener
+    // it registers stays alive on `document` for the rest of the browsing
+    // session and fires on every future navigation, including to pages
+    // that don't have these filter elements, so guard and bail early.
+    document.addEventListener('astro:page-load', () => {
+      const venueSelect = document.getElementById('venueFilter')
+      const yearSelect = document.getElementById('yearFilter')
+      if (!(venueSelect instanceof HTMLSelectElement) || !(yearSelect instanceof HTMLSelectElement)) return
 
-    // Read current selected values across all facets
-    function currentState(): Record<string, string> {
-      return Object.fromEntries(facets.map(f => [f.id, f.select.value]))
-    }
+      // Collect publication items to filter
+      const items = Array.from(document.querySelectorAll<HTMLElement>('#pubList .pub-item'))
 
-    // Recalculate option counts per facet, conditioning on other facet selections
-    function updateCounts() {
-      facets.forEach(facet => {
-        const otherState = Object.fromEntries(facets.filter(f => f !== facet).map(f => [f.id, f.select.value]))
-        const pool = items.filter(el => {
-          return Object.entries(otherState).every(([id, val]) => {
-            if (!val) return true
-            const fac = facets.find(ff => ff.id === id)!
-            return fac.getValue(el) === val
+      // Facet configuration: add new entries here to support more filters
+      const facets: Facet[] = [
+        {
+          id: 'venue',
+          select: venueSelect,
+          getValue: (el) => el.dataset.venue,
+        },
+        {
+          id: 'year',
+          select: yearSelect,
+          getValue: (el) => el.dataset.year,
+        },
+      ]
+
+      // Read current selected values across all facets
+      function currentState(): Record<string, string> {
+        return Object.fromEntries(facets.map(f => [f.id, f.select.value]))
+      }
+
+      // Recalculate option counts per facet, conditioning on other facet selections
+      function updateCounts() {
+        facets.forEach(facet => {
+          const otherState = Object.fromEntries(facets.filter(f => f !== facet).map(f => [f.id, f.select.value]))
+          const pool = items.filter(el => {
+            return Object.entries(otherState).every(([id, val]) => {
+              if (!val) return true
+              const fac = facets.find(ff => ff.id === id)!
+              return fac.getValue(el) === val
+            })
+          })
+          const tally: Record<string, number> = {}
+          pool.forEach(el => {
+            const v = facet.getValue(el)
+            if (v) tally[v] = (tally[v] || 0) + 1
+          })
+          // Update labels and hide options that have zero count (except selected and All)
+          Array.from(facet.select.options).forEach(opt => {
+            const base = opt.dataset.label || opt.textContent?.replace(/\s*\(\d+\)\s*$/, '') || ''
+            opt.dataset.label = base
+            const c = opt.value === '' ? pool.length : (tally[opt.value] || 0)
+            opt.textContent = `${base} (${c})`
+            opt.hidden = opt.value !== '' && c === 0 && !opt.selected
           })
         })
-        const tally: Record<string, number> = {}
-        pool.forEach(el => {
-          const v = facet.getValue(el)
-          if (v) tally[v] = (tally[v] || 0) + 1
-        })
-        // Update labels and hide options that have zero count (except selected and All)
-        Array.from(facet.select.options).forEach(opt => {
-          const base = opt.dataset.label || opt.textContent?.replace(/\s*\(\d+\)\s*$/, '') || ''
-          opt.dataset.label = base
-          const c = opt.value === '' ? pool.length : (tally[opt.value] || 0)
-          opt.textContent = `${base} (${c})`
-          opt.hidden = opt.value !== '' && c === 0 && !opt.selected
-        })
-      })
-    }
+      }
 
-    // Apply current filters to the list and update the facet counts
-    function applyFilter() {
-      const state = currentState()
-      items.forEach(el => {
-        const match = facets.every(f => {
-          const val = state[f.id]
-          return !val || f.getValue(el) === val
+      // Apply current filters to the list and update the facet counts
+      function applyFilter() {
+        const state = currentState()
+        items.forEach(el => {
+          const match = facets.every(f => {
+            const val = state[f.id]
+            return !val || f.getValue(el) === val
+          })
+          el.classList.toggle('hidden', !match)
         })
-        el.classList.toggle('hidden', !match)
-      })
+        updateCounts()
+        // Hide year sections that have no visible cards after filtering
+        document.querySelectorAll('#pubList .year-section').forEach(section => {
+          const hasVisible = Array.from(section.querySelectorAll('.pub-item')).some(el => !el.classList.contains('hidden'))
+          section.classList.toggle('hidden', !hasVisible)
+        })
+      }
+
+      // Wire events and initialize counts on page load
+      facets.forEach(f => f.select.addEventListener('change', applyFilter))
       updateCounts()
-      // Hide year sections that have no visible cards after filtering
-      document.querySelectorAll('#pubList .year-section').forEach(section => {
-        const hasVisible = Array.from(section.querySelectorAll('.pub-item')).some(el => !el.classList.contains('hidden'))
-        section.classList.toggle('hidden', !hasVisible)
-      })
-    }
-
-    // Wire events and initialize counts on page load
-    facets.forEach(f => f.select.addEventListener('change', applyFilter))
-    updateCounts()
+    })
   </script>
 </BaseLayout>

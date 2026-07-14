@@ -62,33 +62,49 @@ function isActive(href: string) {
 </header>
 
 <script>
-  const toggle = document.getElementById('nav-toggle')!
-  const menu = document.getElementById('mobile-nav')!
-  const iconMenu = document.getElementById('icon-menu')!
-  const iconClose = document.getElementById('icon-close')!
-  const label = document.getElementById('toggle-label')!
+  function init() {
+    // This listener persists across view-transition navigations and fires
+    // even on pages that render without a navbar (e.g. 404), so bail early
+    // if these elements aren't present rather than assuming non-null.
+    if (
+      !document.getElementById('nav-toggle') ||
+      !document.getElementById('mobile-nav') ||
+      !document.getElementById('icon-menu') ||
+      !document.getElementById('icon-close') ||
+      !document.getElementById('toggle-label')
+    ) return
 
-  function open() {
-    menu.classList.remove('hidden')
-    toggle.setAttribute('aria-expanded', 'true')
-    toggle.setAttribute('aria-label', 'Close navigation menu')
-    iconMenu.classList.add('hidden')
-    iconClose.classList.remove('hidden')
-    label.textContent = 'Close'
+    const toggle = document.getElementById('nav-toggle')!
+    const menu = document.getElementById('mobile-nav')!
+    const iconMenu = document.getElementById('icon-menu')!
+    const iconClose = document.getElementById('icon-close')!
+    const label = document.getElementById('toggle-label')!
+
+    function open() {
+      menu.classList.remove('hidden')
+      toggle.setAttribute('aria-expanded', 'true')
+      toggle.setAttribute('aria-label', 'Close navigation menu')
+      iconMenu.classList.add('hidden')
+      iconClose.classList.remove('hidden')
+      label.textContent = 'Close'
+    }
+
+    function close() {
+      menu.classList.add('hidden')
+      toggle.setAttribute('aria-expanded', 'false')
+      toggle.setAttribute('aria-label', 'Open navigation menu')
+      iconMenu.classList.remove('hidden')
+      iconClose.classList.add('hidden')
+      label.textContent = 'Menu'
+    }
+
+    toggle.addEventListener('click', () => {
+      menu.classList.contains('hidden') ? open() : close()
+    })
+
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', close))
   }
 
-  function close() {
-    menu.classList.add('hidden')
-    toggle.setAttribute('aria-expanded', 'false')
-    toggle.setAttribute('aria-label', 'Open navigation menu')
-    iconMenu.classList.remove('hidden')
-    iconClose.classList.add('hidden')
-    label.textContent = 'Menu'
-  }
-
-  toggle.addEventListener('click', () => {
-    menu.classList.contains('hidden') ? open() : close()
-  })
-
-  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', close))
+  // Re-run on every view-transition navigation, not just the first load
+  document.addEventListener('astro:page-load', init)
 </script>

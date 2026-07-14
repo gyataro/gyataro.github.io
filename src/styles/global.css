@@ -13,3 +13,9 @@
 html {
   overflow-y: scroll;
 }
+
+/* Speed up the default view-transition page crossfade (browser default is 250ms) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 120ms;
+}

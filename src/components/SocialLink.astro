@@ -6,12 +6,13 @@ type Props = {
 }
 
 const props = Astro.props
+const isExternal = !props.href.startsWith("mailto:")
 
 const mainStyle = "flex gap-3 text-muted hover:text-primary focus:text-primary w-fit"
 const classes = props.class ? [mainStyle, props.class] : mainStyle
 ---
 
-<a href={props.href} class:list={classes} >
+<a href={props.href} class:list={classes} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener noreferrer" : undefined}>
     <slot />
     <p>{props.text}</p>
 </a>

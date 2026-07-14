@@ -1,5 +1,8 @@
 ---
+import { getImage } from "astro:assets";
+import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
+import profileImg from "../assets/profile.jpg";
 
 interface Props {
   title: string;
@@ -10,6 +13,9 @@ interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, schema } = Astro.props;
+
+const ogImage = await getImage({ src: profileImg, width: 1200 });
+const ogImageURL = new URL(ogImage.src, Astro.site);
 ---
 
 <!-- Global Metadata -->
@@ -32,13 +38,19 @@ const { title, description, schema } = Astro.props;
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageURL} />
+<meta property="og:image:width" content={String(ogImage.attributes.width)} />
+<meta property="og:image:height" content={String(ogImage.attributes.height)} />
 
 <!-- Twitter / X -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={ogImageURL} />
 
 { schema && (
   <script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline></script>
 )}
+
+<ClientRouter />
