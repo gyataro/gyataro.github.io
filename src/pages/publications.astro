@@ -68,22 +68,15 @@ const years = Array.from(pubsByYear.keys()).sort((a, b) => b - a);
   ))}
   </div>
   <script>
+    import { onPageReady } from "../lib/page-scripts"
+
     type Facet = {
       id: string
       select: HTMLSelectElement
       getValue: (el: HTMLElement) => string | undefined
     }
 
-    // Astro dedupes identical inline scripts across view-transition
-    // navigations, so this body only runs once ever — but the listener
-    // it registers stays alive on `document` for the rest of the browsing
-    // session and fires on every future navigation, including to pages
-    // that don't have these filter elements, so guard and bail early.
-    document.addEventListener('astro:page-load', () => {
-      const venueSelect = document.getElementById('venueFilter')
-      const yearSelect = document.getElementById('yearFilter')
-      if (!(venueSelect instanceof HTMLSelectElement) || !(yearSelect instanceof HTMLSelectElement)) return
-
+    onPageReady({ venueSelect: 'venueFilter', yearSelect: 'yearFilter' }, ({ venueSelect, yearSelect }) => {
       // Collect publication items to filter
       const items = Array.from(document.querySelectorAll<HTMLElement>('#pubList .pub-item'))
 
@@ -91,12 +84,12 @@ const years = Array.from(pubsByYear.keys()).sort((a, b) => b - a);
       const facets: Facet[] = [
         {
           id: 'venue',
-          select: venueSelect,
+          select: venueSelect as HTMLSelectElement,
           getValue: (el) => el.dataset.venue,
         },
         {
           id: 'year',
-          select: yearSelect,
+          select: yearSelect as HTMLSelectElement,
           getValue: (el) => el.dataset.year,
         },
       ]

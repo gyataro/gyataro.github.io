@@ -6,6 +6,9 @@ export const GITHUB_LINK = "https://github.com/gyataro"
 export const LINKEDIN_LINK = "https://www.linkedin.com/in/xiwenteoh/"
 export const SCHOLAR_LINK = "https://scholar.google.com/citations?user=BBOJEwQAAAAJ&hl=en"
 export const EMAIL_LINK = "mailto:xiwen.teoh@nus.edu.sg"
+export const ORCID_LINK = "https://orcid.org/0009-0009-8528-9088"
+
+export const EXTERNAL_LINK_ATTRS = { target: "_blank", rel: "noopener noreferrer" } as const
 
 export const PAGE_META: Record<string, { title: string; description: string }> = {
   '/': {

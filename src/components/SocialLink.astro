@@ -1,4 +1,6 @@
 ---
+import { EXTERNAL_LINK_ATTRS } from "../consts"
+
 type Props = {
     text: string
     href: string
@@ -12,7 +14,7 @@ const mainStyle = "flex gap-3 text-muted hover:text-primary focus:text-primary w
 const classes = props.class ? [mainStyle, props.class] : mainStyle
 ---
 
-<a href={props.href} class:list={classes} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener noreferrer" : undefined}>
+<a href={props.href} class:list={classes} {...(isExternal ? EXTERNAL_LINK_ATTRS : {})}>
     <slot />
     <p>{props.text}</p>
 </a>

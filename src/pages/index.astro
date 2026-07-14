@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { EXTERNAL_LINK_ATTRS, LINKEDIN_LINK, GITHUB_LINK, SCHOLAR_LINK, ORCID_LINK } from "../consts";
 
 const schema = {
   "@context": "https://schema.org",
@@ -33,8 +34,10 @@ const schema = {
       "url": "https://www.nus.edu.sg"
     },
     "sameAs": [
-      "https://www.linkedin.com/in/xiwenteoh/",
-      "https://github.com/gyataro"
+      LINKEDIN_LINK,
+      GITHUB_LINK,
+      SCHOLAR_LINK,
+      ORCID_LINK
     ],
     "email": "xiwen.teoh@nus.edu.sg",
     "knowsAbout": [
@@ -50,9 +53,9 @@ const schema = {
   <h2 class="mb-1">About me</h2>
   <p>
     I am a 2nd year Ph.D. candidate jointly advised by
-    <a href="https://www.comp.nus.edu.sg/~dongjs/" target="_blank" rel="noopener noreferrer">Prof. Jin Song Dong</a> at the Programming Languages and Software Engineering (PLSE) Lab
+    <a href="https://www.comp.nus.edu.sg/~dongjs/" {...EXTERNAL_LINK_ATTRS}>Prof. Jin Song Dong</a> at the Programming Languages and Software Engineering (PLSE) Lab
     under National University of Singapore (NUS),
-    and by <a href="http://linyun.info/" target="_blank" rel="noopener noreferrer">Prof. Yun Lin</a> at the CoPhi Research Group
+    and by <a href="http://linyun.info/" {...EXTERNAL_LINK_ATTRS}>Prof. Yun Lin</a> at the CoPhi Research Group
     under Shanghai Jiao Tong University (SJTU). 
   </p>
 

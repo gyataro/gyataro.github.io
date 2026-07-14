@@ -3,7 +3,7 @@ import PaperIcon from "./icons/paper.astro"
 import WebsiteIcon from "./icons/website.astro"
 import CodeIcon from "./icons/code.astro"
 import Card from "./Card.astro"
-import { NAME } from "../consts"
+import { NAME, EXTERNAL_LINK_ATTRS } from "../consts"
 
 interface Props {
   title: string
@@ -37,19 +37,19 @@ const showVenue = venueNorm && venueNorm !== 'preprint' && venueNorm !== 'arxiv'
     {hasLinks && (
       <div class="flex items-center gap-3 ml-auto">
         {links?.paper && (
-          <a href={links.paper} target="_blank" rel="noopener noreferrer"
+          <a href={links.paper} {...EXTERNAL_LINK_ATTRS}
              class="inline-flex items-center gap-1 text-xs text-muted hover:text-primary transition-colors">
             <PaperIcon /><span>Paper</span>
           </a>
         )}
         {links?.website && (
-          <a href={links.website} target="_blank" rel="noopener noreferrer"
+          <a href={links.website} {...EXTERNAL_LINK_ATTRS}
              class="inline-flex items-center gap-1 text-xs text-muted hover:text-primary transition-colors">
             <WebsiteIcon /><span>Site</span>
           </a>
         )}
         {links?.code && (
-          <a href={links.code} target="_blank" rel="noopener noreferrer"
+          <a href={links.code} {...EXTERNAL_LINK_ATTRS}
              class="inline-flex items-center gap-1 text-xs text-muted hover:text-primary transition-colors">
             <CodeIcon /><span>Code</span>
           </a>
