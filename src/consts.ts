@@ -100,11 +100,11 @@ export function getPageSchema(pathname: string): Record<string, any> {
 export const PAGE_META: Record<string, { title: string; description: string }> = {
   '/': {
     title: 'Xiwen Teoh',
-    description: "Xiwen Teoh's personal website. Learn more about me and my research. Catch a glimpse of my life.",
+    description: 'Xiwen Teoh is a PhD Candidate in Computer Science at the National University of Singapore (NUS), researching GUI testing, web security, and AI agents.',
   },
   '/publications': {
     title: 'Publications • Xiwen Teoh',
-    description: 'Complete list of publications by Xiwen Teoh.',
+    description: 'Complete list of publications by Xiwen Teoh, PhD Candidate in Computer Science at the National University of Singapore (NUS).',
   },
   '/awards': {
     title: 'Awards • Xiwen Teoh',
