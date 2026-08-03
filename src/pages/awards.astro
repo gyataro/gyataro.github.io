@@ -2,12 +2,14 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Award from "../components/Award.astro";
 import { getSortedAwards, groupByYear } from "../lib/collections";
+import { getPageSchema } from "../consts";
 
+const schema = getPageSchema("/awards");
 const awards = await getSortedAwards();
 const awardsByYear = groupByYear(awards, (a) => a.data.date.getFullYear());
 const awardYears = Array.from(awardsByYear.keys()).sort((a, b) => b - a);
 ---
-<BaseLayout>
+<BaseLayout schema={schema}>
   <h2 class="mb-1">Awards</h2>
   <p>A complete list of awards and recognition I have received.</p>
   <div class="not-prose flex flex-col gap-8">

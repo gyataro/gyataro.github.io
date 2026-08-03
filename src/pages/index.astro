@@ -1,52 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { EXTERNAL_LINK_ATTRS, LINKEDIN_LINK, GITHUB_LINK, SCHOLAR_LINK, ORCID_LINK } from "../consts";
+import { EXTERNAL_LINK_ATTRS, getPageSchema } from "../consts";
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "ProfilePage",
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "item": {"id": "https://xiwen.me", "name": "About Me"}
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "item": {"id": "https://xiwen.me/publications", "name": "Publications"}
-      }
-    ]
-  },
-  "name": "Xiwen Teoh - Personal Website",
-  "url": "https://xiwen.me",
-  "mainEntity": {
-    "@type": "Person",
-    "name": "Xiwen Teoh",
-    "url": "https://xiwen.me",
-    "image": "https://xiwen.me/profile.jpg",
-    "jobTitle": "PhD Student",
-    "affiliation": {
-      "@type": "Organization",
-      "name": "National University of Singapore",
-      "url": "https://www.nus.edu.sg"
-    },
-    "sameAs": [
-      LINKEDIN_LINK,
-      GITHUB_LINK,
-      SCHOLAR_LINK,
-      ORCID_LINK
-    ],
-    "email": "xiwen.teoh@nus.edu.sg",
-    "knowsAbout": [
-      "GUI Testing",
-      "Web Security",
-      "AI Agents"
-    ] 
-  }
-}
+const schema = getPageSchema("/");
 ---
 
 <BaseLayout schema={schema}>

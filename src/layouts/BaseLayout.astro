@@ -18,7 +18,7 @@ const { title, description } = getPageMeta(path);
 ---
 
 <!doctype html>
-<html id="root" lang="en" class="bg-white">
+<html id="root" lang="en" class="bg-white no-js">
   <head>
     <BaseHead title={title} description={description} schema={schema} />
   </head>
@@ -27,36 +27,25 @@ const { title, description } = getPageMeta(path);
     { showNavBar && <div class="h-12" aria-hidden="true" /> }
 
     { path === "/" && (
-      <>
-        <div
-          id="hero-banner"
-          data-src={bannerImg.src}
-          class="absolute inset-x-0 top-12 h-48 opacity-0 transition-opacity duration-700 ease-out"
-          style={`background-image: url(${bannerImg.src}); background-repeat: repeat; background-size: 195px;`}
-          aria-hidden="true"
-        />
-        <noscript>
-          <style>#hero-banner { opacity: 0.3 !important; }</style>
-        </noscript>
-      </>
+      <div
+        id="hero-banner"
+        data-src={bannerImg.src}
+        class="absolute inset-x-0 top-12 h-48 opacity-0 transition-opacity duration-700 ease-out"
+        style={`background-image: url(${bannerImg.src}); background-repeat: repeat; background-size: 195px;`}
+        aria-hidden="true"
+      />
     )}
 
-    { showProfileCard && (
-      <div class:list={[
-        "sm:hidden mb-12 relative",
-        { hidden: path !== "/" },
-      ]}>
-        <ProfileCard />
-      </div>
-    )}
-
-    <div class="sm:grid sm:grid-cols-3 sm:gap-20">
+    <div class="grid grid-cols-1 sm:grid-cols-3 sm:gap-20">
       { showProfileCard && (
-        <div class="hidden sm:block mb-12 sm:mb-0 sm:col-span-1 sm:sticky sm:top-[5.5rem] sm:h-fit">
+        <div class:list={[
+          "relative mb-12 sm:mb-0 sm:col-span-1 sm:sticky sm:top-[5.5rem] sm:h-fit",
+          { "hidden sm:block": path !== "/" },
+        ]}>
           <ProfileCard />
         </div>
       )}
-      <div class:list={["col-span-2 prose", { "sm:pt-[12rem]": path === "/" }]}>
+      <div class:list={["col-span-1 sm:col-span-2 prose", { "sm:pt-[12rem]": path === "/" }]}>
         <slot />
       </div>
     </div>

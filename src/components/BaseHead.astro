@@ -3,6 +3,7 @@ import { getImage } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 import profileImg from "../assets/profile.jpg";
+import { NAME } from "../consts";
 
 interface Props {
   title: string;
@@ -20,6 +21,7 @@ const ogImageURL = new URL(ogImage.src, Astro.site);
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
+<script is:inline>document.documentElement.classList.remove("no-js")</script>
 <meta content="IE=edge" http-equiv="X-UA-Compatible" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -32,9 +34,11 @@ const ogImageURL = new URL(ogImage.src, Astro.site);
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
+<meta name="author" content={NAME} />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
+<meta property="og:site_name" content={NAME} />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
