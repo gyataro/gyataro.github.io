@@ -16,5 +16,4 @@ links:
   paper: https://arxiv.org/abs/2512.06906
   website: https://sites.google.com/view/mines-anomaly-detection/home
   code: https://github.com/code-philia/MINES-Anomaly-Detection
-selected: false
 ---

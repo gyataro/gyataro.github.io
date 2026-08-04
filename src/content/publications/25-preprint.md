@@ -14,5 +14,4 @@ links:
   paper: https://arxiv.org/abs/2507.15393
   website: https://sites.google.com/view/pimref/home
   code: https://anonymous.4open.science/r/PiMRef-A513/README.md
-selected: false
 ---

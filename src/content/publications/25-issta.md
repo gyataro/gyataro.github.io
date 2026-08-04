@@ -15,6 +15,5 @@ links:
   paper: https://dl.acm.org/doi/10.1145/3728909
   website: https://sites.google.com/view/guipilot/home
   code: https://github.com/code-philia/GUIPilot
-selected: true
 cofirst: true
 ---

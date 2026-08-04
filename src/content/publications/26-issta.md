@@ -16,5 +16,4 @@ links:
   paper: https://arxiv.org/abs/2602.13723
   website: http://arc-bench.com/
   code: https://github.com/code-philia/agentic-requirement-compiler
-selected: true
 ---

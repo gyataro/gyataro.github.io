@@ -20,7 +20,6 @@ const publications = defineCollection({
         code: z.string().url().optional(),
       })
       .optional(),
-    selected: z.boolean()
   }),
 });
 

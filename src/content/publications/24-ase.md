@@ -17,5 +17,4 @@ links:
   paper: https://dl.acm.org/doi/10.1145/3691620.3695024
   website: https://sites.google.com/view/webnorm/overview
   code: https://zenodo.org/records/13753186
-selected: false
 ---

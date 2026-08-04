@@ -15,5 +15,4 @@ links:
   paper: https://www.usenix.org/conference/usenixsecurity25/presentation/teoh
   website: https://halligan.pages.dev/
   code: https://github.com/code-philia/Halligan
-selected: true
 ---

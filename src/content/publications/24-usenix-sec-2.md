@@ -14,5 +14,4 @@ links:
   paper: https://www.usenix.org/system/files/usenixsecurity24-liu-ruofan.pdf
   website: https://sites.google.com/view/phishllm
   code: https://github.com/code-philia/phishllm
-selected: false
 ---
