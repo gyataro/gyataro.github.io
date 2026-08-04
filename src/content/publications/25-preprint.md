@@ -1,7 +1,6 @@
 ---
 title: "PiMRef: Detecting and Explaining Ever-evolving Spear Phishing Emails with Knowledge Base Invariants"
 venue: Preprint
-year: 2025
 date: 2025-07-01T00:00:00Z
 authors:
   - Ruofan Liu

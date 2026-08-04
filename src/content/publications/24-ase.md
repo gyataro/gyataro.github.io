@@ -1,7 +1,6 @@
 ---
 title: Detecting and Explaining Anomalies Caused by Web Tamper Attacks via Building Consistency-based Normality
 venue: ASE
-year: 2024
 date: 2024-11-01T00:00:00Z
 authors:
   - Yifan Liao

@@ -1,7 +1,6 @@
 ---
 title: "MINES: Explainable Anomaly Detection through Web API Invariant Inference"
 venue: ICSE
-year: 2026
 date: 2026-10-01T00:00:00Z
 authors:
   - Wenjie Zhang

@@ -1,7 +1,6 @@
 ---
 title: "Compiling Large Multi-Modal Requirement Documents into Runnable Software Systems: From an Agentic Test-Driven Perspective"
 venue: ISSTA
-year: 2026
 date: 2026-10-03T00:00:00Z
 authors:
   - Weiyu Kong

@@ -5,7 +5,7 @@ import { getSortedPublications, groupByYear } from "../lib/collections";
 import { getPublicationsSchema } from "../consts";
 
 const publications = await getSortedPublications();
-const schema = getPublicationsSchema(publications.map((p) => p.data));
+const schema = await getPublicationsSchema(publications.map((p) => p.data));
 
 const venues = Array.from(new Set(publications.map((p) => p.data.venue))).sort((a, b) => a.localeCompare(b));
 const venueCounts = publications.reduce((acc, p) => {
@@ -14,12 +14,12 @@ const venueCounts = publications.reduce((acc, p) => {
   return acc;
 }, {} as Record<string, number>);
 const yearCounts = publications.reduce((acc, p) => {
-  const y = String(p.data.year);
+  const y = String(p.data.date.getFullYear());
   acc[y] = (acc[y] || 0) + 1;
   return acc;
 }, {} as Record<string, number>);
 
-const pubsByYear = groupByYear(publications, (p) => p.data.year);
+const pubsByYear = groupByYear(publications, (p) => p.data.date.getFullYear());
 const years = Array.from(pubsByYear.keys()).sort((a, b) => b - a);
 ---
 <BaseLayout schema={schema}>
@@ -54,7 +54,7 @@ const years = Array.from(pubsByYear.keys()).sort((a, b) => b - a);
     <div class="year-section flex flex-col gap-3" data-year={String(yr)}>
       <p class="text-sm font-semibold text-muted uppercase tracking-wider">{yr}</p>
       {pubsByYear.get(yr)?.map(({ data }) => (
-        <div class="pub-item" data-venue={data.venue} data-year={String(data.year)}>
+        <div class="pub-item" data-venue={data.venue} data-year={String(data.date.getFullYear())}>
           <PaperCard
             title={data.title}
             venue={data.venue}
@@ -119,8 +119,7 @@ const years = Array.from(pubsByYear.keys()).sort((a, b) => b - a);
           })
           // Update labels and hide options that have zero count (except selected and All)
           Array.from(facet.select.options).forEach(opt => {
-            const base = opt.dataset.label || opt.textContent?.replace(/\s*\(\d+\)\s*$/, '') || ''
-            opt.dataset.label = base
+            const base = opt.dataset.label ?? ''
             const c = opt.value === '' ? pool.length : (tally[opt.value] || 0)
             opt.textContent = `${base} (${c})`
             opt.hidden = opt.value !== '' && c === 0 && !opt.selected

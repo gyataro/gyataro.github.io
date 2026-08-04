@@ -1,7 +1,6 @@
 ---
 title: "GUIPilot: A Consistency-based Mobile GUI Testing Approach for Detecting Application-specific Bugs"
 venue: ISSTA
-year: 2025
 date: 2025-06-01T00:00:00Z
 authors:
   - Ruofan Liu
