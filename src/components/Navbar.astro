@@ -86,7 +86,8 @@ function isActive(href: string) {
       }
 
       toggle.addEventListener('click', () => {
-        menu.classList.contains('hidden') ? open() : close()
+        if (menu.classList.contains('hidden')) open()
+        else close()
       })
 
       menu.querySelectorAll('a').forEach(a => a.addEventListener('click', close))

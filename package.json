@@ -6,6 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "check": "astro check",
+    "lint": "eslint .",
     "astro": "astro"
   },
   "dependencies": {
@@ -18,6 +20,10 @@
     "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.20"
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/typography": "^0.5.20",
+    "eslint": "^10.8.0",
+    "eslint-plugin-astro": "^3.1.0",
+    "typescript-eslint": "^8.65.0"
   }
 }
