@@ -8,6 +8,9 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
   integrations: [sitemap()],
+  prefetch: {
+    defaultStrategy: 'viewport'
+  },
   devToolbar: {
     enabled: false
   },
