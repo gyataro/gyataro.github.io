@@ -1,43 +1,45 @@
-# Astro Starter Kit: Minimal
+# xiwen.me
 
-```sh
-npm create astro@latest -- --template minimal
+Personal portfolio site for Xiwen Teoh, built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com). Deployed to GitHub Pages at [xiwen.me](https://xiwen.me).
+
+## Stack
+
+- **Astro 7** (static output) with content collections for publications and awards
+- **Tailwind CSS v4** (config-free, CSS-native theme in `src/styles/global.css`)
+- **TypeScript** in strict mode
+- **pnpm** as package manager, Node 22 (see `.nvmrc`)
+
+## Project structure
+
+```
+src/
+  assets/            # source images (optimized at build time via astro:assets)
+  components/        # Astro components, including icons/
+  content/
+    awards/          # one markdown file per award
+    publications/    # one markdown file per publication
+  content.config.ts  # zod schemas for the content collections
+  consts.ts          # site-wide constants, SEO meta, JSON-LD schema builders
+  lib/                # shared helpers (collection queries, page-script utilities)
+  layouts/BaseLayout.astro
+  pages/             # index, publications, awards, 404
+  styles/global.css  # Tailwind import + theme tokens
+public/              # favicon, robots.txt
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Commands
 
-## 🚀 Project Structure
+All commands are run from the root of the project:
 
-Inside of your Astro project, you'll see the following folders and files:
+| Command        | Action                                       |
+| :------------- | :-------------------------------------------- |
+| `pnpm install` | Install dependencies                          |
+| `pnpm dev`     | Start local dev server at `localhost:4321`    |
+| `pnpm build`   | Build the production site to `./dist/`        |
+| `pnpm preview` | Preview the build locally before deploying    |
+| `pnpm check`   | Run Astro/TypeScript type-checking            |
+| `pnpm lint`    | Run ESLint                                    |
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Deployment
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Pushes to `main` trigger `.github/workflows/deploy.yml`, which type-checks, lints, builds, and deploys to GitHub Pages.
