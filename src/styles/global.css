@@ -23,3 +23,15 @@ html {
 ::view-transition-new(root) {
   animation-duration: 120ms;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+
+  #hero-banner {
+    transition: none !important;
+  }
+}
