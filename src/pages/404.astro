@@ -3,17 +3,17 @@ import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import notfound from "../assets/404.jpg"
 ---
-<BaseLayout schema={undefined} showNavBar={false} showProfileCard={false}>
+<BaseLayout schema={undefined} showNavBar={false} showProfileCard={false} noindex>
   <figure>
-    <Image 
+    <Image
         src={notfound}
         alt="404 Not Found"
         width={240}
         densities={[1.5, 2]}
         loading="eager"
     />
+    <figcaption>Fork-tailed Flycatcher (<i>Tyrannus savana</i>).<br/>Plate 168, John J. Audubon's Birds of America.<br/>Courtesy of the John James Audubon Center at Mill Grove, Montgomery County Audubon Collection, and Zebra Publishing</figcaption>
   </figure>
-  <figcaption>Fork-tailed Flycatcher (<i>Tyrannus savana</i>).<br/>Plate 168, John J. Audubon's Birds of America.<br/>Courtesy of the John James Audubon Center at Mill Grove, Montgomery County Audubon Collection, and Zebra Publishing</figcaption>
   <h2 class="mb-1">You've ventured into wilderness...</h2>
   <a href="/">Back to civilization</a>
 </BaseLayout>
