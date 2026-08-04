@@ -7,7 +7,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
-  integrations: [sitemap()],
+  integrations: [sitemap({ lastmod: new Date() })],
   devToolbar: {
     enabled: false
   },

@@ -2,10 +2,10 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PaperCard from "../components/PaperCard.astro";
 import { getSortedPublications, groupByYear } from "../lib/collections";
-import { getPageSchema } from "../consts";
+import { getPublicationsSchema } from "../consts";
 
-const schema = getPageSchema("/publications");
 const publications = await getSortedPublications();
+const schema = getPublicationsSchema(publications.map((p) => p.data));
 
 const venues = Array.from(new Set(publications.map((p) => p.data.venue))).sort((a, b) => a.localeCompare(b));
 const venueCounts = publications.reduce((acc, p) => {
