@@ -24,6 +24,12 @@ const meIndex = me ? authors.findIndex(a => a.toLowerCase() === me.toLowerCase()
 const hasLinks = links?.paper || links?.website || links?.code
 const venueNorm = venue?.trim().toLowerCase()
 const showVenue = venueNorm && venueNorm !== 'preprint' && venueNorm !== 'arxiv'
+
+const linkItems = [
+  { href: links?.paper, Icon: PaperIcon, label: "Paper" },
+  { href: links?.website, Icon: WebsiteIcon, label: "Site" },
+  { href: links?.code, Icon: CodeIcon, label: "Code" },
+]
 ---
 
 <Card>
@@ -36,24 +42,12 @@ const showVenue = venueNorm && venueNorm !== 'preprint' && venueNorm !== 'arxiv'
     {showVenue && <span class="text-xs font-medium text-muted">{venue}</span>}
     {hasLinks && (
       <div class="flex items-center gap-3 ml-auto">
-        {links?.paper && (
-          <a href={links.paper} {...EXTERNAL_LINK_ATTRS}
+        {linkItems.map(({ href, Icon, label }) => href && (
+          <a href={href} {...EXTERNAL_LINK_ATTRS}
              class="inline-flex items-center gap-1 text-xs text-muted hover:text-primary transition-colors">
-            <PaperIcon /><span>Paper</span>
+            <Icon /><span>{label}</span>
           </a>
-        )}
-        {links?.website && (
-          <a href={links.website} {...EXTERNAL_LINK_ATTRS}
-             class="inline-flex items-center gap-1 text-xs text-muted hover:text-primary transition-colors">
-            <WebsiteIcon /><span>Site</span>
-          </a>
-        )}
-        {links?.code && (
-          <a href={links.code} {...EXTERNAL_LINK_ATTRS}
-             class="inline-flex items-center gap-1 text-xs text-muted hover:text-primary transition-colors">
-            <CodeIcon /><span>Code</span>
-          </a>
-        )}
+        ))}
       </div>
     )}
   </div>

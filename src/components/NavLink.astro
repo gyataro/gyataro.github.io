@@ -1,0 +1,18 @@
+---
+interface Props {
+  href: string
+  label: string
+  padding?: string
+}
+
+const { href, label, padding = "py-1" } = Astro.props
+const path = Astro.url.pathname
+const isActive = href === "/" ? path === "/" : (path === href || path.startsWith(href + "/"))
+---
+
+<a
+  href={href}
+  data-astro-prefetch
+  class:list={[`px-2 ${padding} text-sm transition-colors hover:text-white`, { "text-white font-semibold": isActive, "text-slate-400": !isActive }]}
+  aria-current={isActive ? "page" : undefined}
+>{label}</a>
