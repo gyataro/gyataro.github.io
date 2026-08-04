@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { EXTERNAL_LINK_ATTRS, getPageSchema } from "../consts";
 
-const schema = getPageSchema("/");
+const schema = await getPageSchema("/");
 ---
 
 <BaseLayout schema={schema}>

@@ -1,6 +1,9 @@
 // Place any global data in this file.
 // You can import this data from anywhere in your site by using the `import` keyword.
 
+import { getImage } from 'astro:assets'
+import profileImg from './assets/profile.jpg'
+
 export const NAME = 'Xiwen Teoh'
 // Surname-first order, common in Malaysian/Chinese naming convention searches.
 export const ALTERNATE_NAME = 'Teoh Xiwen'
@@ -12,16 +15,19 @@ export const ORCID_LINK = "https://orcid.org/0009-0009-8528-9088"
 
 export const EXTERNAL_LINK_ATTRS = { target: "_blank", rel: "noopener noreferrer" } as const
 
-export const PERSON_SCHEMA = {
+export const JOB_TITLE = 'PhD Candidate'
+export const FIELD = 'Computer Science'
+export const UNIVERSITY = 'National University of Singapore'
+
+const PERSON_SCHEMA_BASE = {
   "@type": "Person",
   "name": NAME,
   "alternateName": ALTERNATE_NAME,
   "url": "https://xiwen.me",
-  "image": "https://xiwen.me/profile.jpg",
-  "jobTitle": "PhD Student",
+  "jobTitle": JOB_TITLE,
   "affiliation": {
     "@type": "Organization",
-    "name": "National University of Singapore",
+    "name": UNIVERSITY,
     "url": "https://www.nus.edu.sg"
   },
   "sameAs": [
@@ -38,18 +44,23 @@ export const PERSON_SCHEMA = {
   ]
 }
 
+async function getPersonSchema() {
+  const img = await getImage({ src: profileImg })
+  return { ...PERSON_SCHEMA_BASE, "image": `https://xiwen.me${img.src}` }
+}
+
 function breadcrumb(items: { name: string; path: string }[]) {
   return {
     "@type": "BreadcrumbList",
     "itemListElement": items.map(({ name, path }, i) => ({
       "@type": "ListItem",
       "position": i + 1,
-      "item": { "id": `https://xiwen.me${path}`, "name": name }
+      "item": { "@id": `https://xiwen.me${path}`, "name": name }
     }))
   }
 }
 
-export function getPageSchema(pathname: string): Record<string, unknown> {
+export async function getPageSchema(pathname: string): Promise<Record<string, unknown>> {
   const normalized = pathname === '/' ? '/' : pathname.replace(/\/+$/, '')
 
   if (normalized === '/') {
@@ -62,7 +73,7 @@ export function getPageSchema(pathname: string): Record<string, unknown> {
         { name: "About Me", path: "/" },
         { name: "Publications", path: "/publications" }
       ]),
-      "mainEntity": PERSON_SCHEMA
+      "mainEntity": await getPersonSchema()
     }
   }
 
@@ -76,7 +87,7 @@ export function getPageSchema(pathname: string): Record<string, unknown> {
         { name: "About Me", path: "/" },
         { name: "Awards", path: "/awards" }
       ]),
-      "about": PERSON_SCHEMA
+      "about": await getPersonSchema()
     }
   }
 
@@ -91,7 +102,7 @@ type PublicationLike = {
   links?: { paper?: string; website?: string }
 }
 
-export function getPublicationsSchema(publications: PublicationLike[]): Record<string, unknown> {
+export async function getPublicationsSchema(publications: PublicationLike[]): Promise<Record<string, unknown>> {
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -101,7 +112,7 @@ export function getPublicationsSchema(publications: PublicationLike[]): Record<s
       { name: "About Me", path: "/" },
       { name: "Publications", path: "/publications" }
     ]),
-    "about": PERSON_SCHEMA,
+    "about": await getPersonSchema(),
     "mainEntity": {
       "@type": "ItemList",
       "itemListElement": publications.map((p, i) => ({
@@ -124,7 +135,7 @@ export function getPublicationsSchema(publications: PublicationLike[]): Record<s
 export const PAGE_META: Record<string, { title: string; description: string }> = {
   '/': {
     title: 'Xiwen Teoh',
-    description: 'Xiwen Teoh is a PhD Candidate in Computer Science at the National University of Singapore (NUS), researching GUI testing, web security, and AI agents.',
+    description: 'Xiwen Teoh is a PhD Candidate in Computer Science at the National University of Singapore, researching GUI testing, web security, and AI agents.',
   },
   '/publications': {
     title: 'Publications • Xiwen Teoh',

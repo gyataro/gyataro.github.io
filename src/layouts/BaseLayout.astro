@@ -9,9 +9,10 @@ interface Props {
   schema?: Record<string, unknown>;
   showNavBar?: boolean;
   showProfileCard?: boolean;
+  noindex?: boolean;
 }
 
-const { schema, showNavBar = true, showProfileCard = true } = Astro.props;
+const { schema, showNavBar = true, showProfileCard = true, noindex = false } = Astro.props;
 
 const path = Astro.url.pathname;
 const { title, description } = getPageMeta(path);
@@ -20,7 +21,7 @@ const { title, description } = getPageMeta(path);
 <!doctype html>
 <html id="root" lang="en" class="bg-white no-js">
   <head>
-    <BaseHead title={title} description={description} schema={schema} />
+    <BaseHead title={title} description={description} schema={schema} noindex={noindex} />
   </head>
   <body class="mx-auto p-10 max-w-5xl">
     { showNavBar && <Navbar /> }
