@@ -1,13 +1,15 @@
 ---
-title: "PiMRef: Detecting and Explaining Ever-evolving Spear Phishing Emails with Knowledge Base Invariants"
-venue: Preprint
-date: 2025-07-01T00:00:00Z
+title: "PiMRef: Deducing Ever-evolving Spear-phishing Emails with Knowledge Base Invariants"
+venue: CCS
+date: 2026-08-29T00:00:00Z
 authors:
   - Ruofan Liu
   - Yun Lin
-  - Silas Yeo Shuen Yu
+  - Yuxin Wang
   - Xiwen Teoh
   - Zhenkai Liang
+  - Gongshen Liu
+  - Haojin Zhu
   - Jin Song Dong
 links:
   paper: https://arxiv.org/abs/2507.15393
