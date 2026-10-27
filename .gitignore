@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Built from src/content/ by `pnpm cv` (and in CI)
+public/Xiwen_Teoh_CV.pdf

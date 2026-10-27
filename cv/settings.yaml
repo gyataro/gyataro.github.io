@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/rendercv/rendercv/refs/tags/v2.8/schema.json
+# RenderCV settings. The PDF path and which outputs to skip are passed on the
+# command line by scripts/build-cv.ts.
+settings:
+  current_date: today
+  render_command:
+    output_folder: build
+  bold_keywords: []
+  pdf_title: NAME - CV

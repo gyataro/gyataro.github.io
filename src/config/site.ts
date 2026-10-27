@@ -49,22 +49,32 @@ export const siteConfig = {
     "https://dblp.org/pid/381/1686.html",
     "https://www.semanticscholar.org/author/Xiwen-Teoh/2312305564",
   ],
+  // `label` doubles as the RenderCV network name; `username` is what the CV
+  // header shows for it.
   socialLinks: [
     {
       label: "Google Scholar",
       href: "https://scholar.google.com/citations?user=BBOJEwQAAAAJ&hl=en",
       icon: "scholar",
+      username: "BBOJEwQAAAAJ",
     },
-    { label: "GitHub", href: "https://github.com/gyataro", icon: "github" },
+    {
+      label: "GitHub",
+      href: "https://github.com/gyataro",
+      icon: "github",
+      username: "gyataro",
+    },
     {
       label: "LinkedIn",
       href: "https://www.linkedin.com/in/xiwenteoh/",
       icon: "linkedin",
+      username: "xiwenteoh",
     },
     {
       label: "ORCID",
       href: "https://orcid.org/0009-0009-8528-9088",
       icon: "orcid",
+      username: "0009-0009-8528-9088",
     },
   ],
 } as const;

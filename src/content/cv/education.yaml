@@ -4,6 +4,10 @@
   field: Computer Science
   start: 2024
   end: present
+  cv:
+    highlights:
+      - Advised by Prof. Jin Song Dong and Prof. Yun Lin.
+      - "Research interests: Agentic AI for Internet security and software testing."
 - id: be-sjtu
   degree: BE
   institution: Shanghai Jiao Tong University

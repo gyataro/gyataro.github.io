@@ -13,4 +13,6 @@ links:
   paper: https://www.usenix.org/system/files/usenixsecurity24-teoh.pdf
   website: https://sites.google.com/view/phishdecloaker/home
   code: https://github.com/code-philia/PhishDecloaker
+cv:
+  selected: true
 ---

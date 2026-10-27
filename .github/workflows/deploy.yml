@@ -35,6 +35,15 @@ jobs:
 
       - run: pnpm test
 
+      # The CV PDF is generated from src/content/ (see scripts/build-cv.ts)
+      # and must exist in public/ before the site build copies it.
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: cv/uv.lock
+
+      - run: pnpm cv
+
       - run: pnpm build
 
       - uses: actions/upload-pages-artifact@v5

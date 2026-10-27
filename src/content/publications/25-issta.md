@@ -16,4 +16,6 @@ links:
   website: https://sites.google.com/view/guipilot/home
   code: https://github.com/code-philia/GUIPilot
 cofirst: true
+cv:
+  selected: true
 ---
