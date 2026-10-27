@@ -71,11 +71,14 @@
   }
 }
 
-/* The tile image is used only as a mask, so the pattern takes the accent
-   color and follows light/dark mode. A gradient mask fades it out downward. */
+/* The tile image is used only as a mask, so the pattern takes a theme color.
+   Light mode uses the original tiles' navy: the teal-leaning link blue turns
+   gray-green when blended thinly over the warm cream background. A gradient
+   mask fades the band out downward. */
 .tile-band {
+  --tile-color: #2d3276;
   --tile-opacity: 0.11;
-  background-color: var(--primary);
+  background-color: var(--tile-color);
   opacity: var(--tile-opacity);
   mask-image:
     var(--tile-mask),
@@ -88,11 +91,13 @@
 }
 
 :root[data-theme="dark"] .tile-band {
+  --tile-color: var(--primary);
   --tile-opacity: 0.1;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) .tile-band {
+    --tile-color: var(--primary);
     --tile-opacity: 0.1;
   }
 }

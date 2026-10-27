@@ -66,5 +66,7 @@ import { sectionLabel, sections } from "@/config/site";
   };
   window.addEventListener("scroll", schedule, { passive: true });
   window.addEventListener("resize", schedule);
-  update();
+  // First run waits a frame so it reads layout the browser has already done,
+  // instead of forcing a synchronous reflow during page load.
+  schedule();
 </script>
