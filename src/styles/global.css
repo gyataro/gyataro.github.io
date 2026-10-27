@@ -3,7 +3,8 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans:
+    var(--font-inter), "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
 
   --color-background: var(--background);
@@ -13,6 +14,31 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-card: var(--card);
+}
+
+/* Stand-in for Inter while it loads, scaled to Inter's metrics (values from
+   Astro's font tooling) so text doesn't re-wrap when the web font swaps in.
+   Liberation Sans has Arial's exact metrics, which covers Linux machines,
+   including the ones Lighthouse runs on. */
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans");
+  font-weight: 400 500;
+  size-adjust: 107.1194%;
+  ascent-override: 90.4365%;
+  descent-override: 22.518%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Inter Fallback";
+  src:
+    local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold");
+  font-weight: 600 700;
+  size-adjust: 107.1194%;
+  ascent-override: 90.4365%;
+  descent-override: 22.518%;
+  line-gap-override: 0%;
 }
 
 :root {

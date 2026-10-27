@@ -16,15 +16,21 @@ export default defineConfig({
       provider: fontProviders.fontsource(),
       name: "Inter",
       cssVariable: "--font-inter",
+      // Static weights, not the variable font: Regular alone (23 KB) is what
+      // body text waits for, while the variable file is 73 KB.
       weights: [400, 500, 600],
       styles: ["normal"],
       subsets: ["latin"],
+      // The fallback is defined in global.css ("Inter Fallback") so it can
+      // also match Liberation Sans on Linux; Astro's only tries Arial.
+      fallbacks: [],
     },
     {
       provider: fontProviders.fontsource(),
       name: "Newsreader",
       cssVariable: "--font-newsreader",
-      weights: [500, 600],
+      // Headings only use semibold.
+      weights: [600],
       styles: ["normal"],
       subsets: ["latin"],
     },
