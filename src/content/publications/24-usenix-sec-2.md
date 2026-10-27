@@ -1,6 +1,7 @@
 ---
 title: "Less Defined Knowledge and More True Alarms: Reference-based Phishing Detection without a Pre-defined Reference List"
 venue: USENIX Security
+venueFull: USENIX Security Symposium
 date: 2024-08-01T00:00:00Z
 authors:
   - Ruofan Liu

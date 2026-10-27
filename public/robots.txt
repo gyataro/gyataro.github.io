@@ -1,4 +1,0 @@
-User-agent: *
-Disallow:
-
-Sitemap: https://xiwen.me/sitemap-index.xml

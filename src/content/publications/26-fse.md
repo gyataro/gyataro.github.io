@@ -1,6 +1,7 @@
 ---
 title: "WebTestPilot: Agentic End-to-End Web Testing against Natural Language Specification by Inferring Oracles with Symbolized GUI Elements"
 venue: FSE
+venueFull: International Conference on the Foundations of Software Engineering
 date: 2026-01-01T00:00:00Z
 authors:
   - Xiwen Teoh

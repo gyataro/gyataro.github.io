@@ -1,0 +1,12 @@
+- id: phd-nus
+  degree: PhD
+  institution: National University of Singapore
+  field: Computer Science
+  start: 2024
+  end: present
+- id: be-sjtu
+  degree: BE
+  institution: Shanghai Jiao Tong University
+  field: Computer Science
+  start: 2019
+  end: 2023

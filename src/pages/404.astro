@@ -1,20 +1,25 @@
 ---
-import { Image } from "astro:assets";
-import BaseLayout from "../layouts/BaseLayout.astro";
-import notfound from "../assets/404.jpg"
+import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
-<BaseLayout schema={undefined} showNavBar={false} showProfileCard={false} noindex>
-  <figure>
-    <Image
-        src={notfound}
-        alt="404 Not Found"
-        width={240}
-        densities={[1.5, 2]}
-        loading="eager"
-    />
-    <figcaption>Fork-tailed Flycatcher (<i>Tyrannus savana</i>).<br/>Plate 168, John J. Audubon's Birds of America.<br/>Courtesy of the John James Audubon Center at Mill Grove, Montgomery County Audubon Collection, and Zebra Publishing</figcaption>
-  </figure>
-  <h2 class="mb-1">You've ventured into wilderness...</h2>
-  <a href="/">Back to civilization</a>
-</BaseLayout>
 
+<BaseLayout
+  title="Page not found · Xiwen Teoh"
+  description="The page you are looking for does not exist."
+  noindex
+>
+  <section class="py-24 text-center">
+    <p class="text-sm font-semibold text-muted-foreground">404</p>
+    <h1 class="mt-2 font-serif text-4xl font-semibold tracking-tight">
+      Page not found
+    </h1>
+    <p class="mt-4 text-muted-foreground">
+      The page you are looking for does not exist or has moved.
+    </p>
+    <a
+      href="/"
+      class="mt-8 inline-block rounded-full border border-border bg-card px-4 py-2 text-sm transition-colors hover:border-primary hover:text-primary"
+    >
+      Back to home
+    </a>
+  </section>
+</BaseLayout>

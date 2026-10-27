@@ -1,6 +1,7 @@
 ---
 title: "PhishDecloaker: Detecting CAPTCHA-cloaked Phishing Websites via Hybrid Vision-based Interactive Models"
 venue: USENIX Security
+venueFull: USENIX Security Symposium
 date: 2024-08-01T00:00:00Z
 authors:
   - Xiwen Teoh

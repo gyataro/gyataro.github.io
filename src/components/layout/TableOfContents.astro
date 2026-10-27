@@ -1,0 +1,70 @@
+---
+import { sectionLabel, sections } from "@/config/site";
+---
+
+<!-- Sits in the empty left margin on wide screens only; narrower screens get
+     the same list from the navbar menu. Content column is max-w-3xl (48rem),
+     so the list is placed 12rem left of the column's edge. -->
+<nav
+  aria-label="On this page"
+  class="fixed top-28 left-[calc(50%-36rem)] hidden w-40 xl:block"
+>
+  <p class="mb-3 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+    On this page
+  </p>
+  <ul class="flex flex-col border-l border-border text-sm">
+    {sections.map((section) => (
+      <li>
+        <a
+          href={`#${section.id}`}
+          data-toc-link={section.id}
+          class="-ml-px block border-l-2 border-transparent py-1 pl-3 text-muted-foreground transition-colors hover:text-foreground aria-[current=location]:border-primary aria-[current=location]:font-medium aria-[current=location]:text-foreground"
+        >
+          {sectionLabel(section)}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<script>
+  // Highlights the section being read. Links work without this; it only adds
+  // the highlight.
+  const links = [
+    ...document.querySelectorAll<HTMLAnchorElement>("[data-toc-link]"),
+  ];
+  const targets = links
+    .map((link) => document.getElementById(link.dataset.tocLink ?? ""))
+    .filter((el): el is HTMLElement => el !== null);
+
+  const update = () => {
+    // The current section is the last one whose top has passed 30% of the
+    // viewport; at the very bottom, short final sections win.
+    const threshold = window.innerHeight * 0.3;
+    let current = targets[0];
+    for (const target of targets) {
+      if (target.getBoundingClientRect().top <= threshold) current = target;
+    }
+    const atBottom =
+      window.innerHeight + window.scrollY >=
+      document.documentElement.scrollHeight - 2;
+    if (atBottom) current = targets[targets.length - 1];
+
+    for (const link of links) {
+      if (link.dataset.tocLink === current?.id) {
+        link.setAttribute("aria-current", "location");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    }
+  };
+
+  let frame = 0;
+  const schedule = () => {
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(update);
+  };
+  window.addEventListener("scroll", schedule, { passive: true });
+  window.addEventListener("resize", schedule);
+  update();
+</script>

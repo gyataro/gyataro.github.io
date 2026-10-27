@@ -1,37 +1,104 @@
 @import "tailwindcss";
-@plugin '@tailwindcss/typography';
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
-  --color-main: var(--color-slate-900);
-  --color-muted: var(--color-slate-600);
-  --color-primary: var(--color-indigo-700);
-  --color-surface: var(--color-slate-50);
-  --color-surface-hover: var(--color-slate-100);
-  --color-line: var(--color-slate-200);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
 }
 
-html {
-  overflow-y: scroll;
+:root {
+  --background: #fbfaf7;
+  --foreground: #1c1b18;
+  --primary: #1d5b85;
+  --border: #e6e2d9;
+  --muted: #f2efe8;
+  --muted-foreground: #5c5850;
+  --card: #ffffff;
+  color-scheme: light;
 }
 
-.no-js #hero-banner {
-  opacity: 0.3 !important;
+:root[data-theme="dark"] {
+  --background: #131312;
+  --foreground: #e9e6df;
+  --primary: #8cc4ea;
+  --border: #2c2b28;
+  --muted: #1d1c1a;
+  --muted-foreground: #a39e94;
+  --card: #1a1918;
+  color-scheme: dark;
 }
 
-/* Speed up the default view-transition page crossfade (browser default is 250ms) */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 120ms;
+/* Without JS the theme script never runs, so follow the OS preference. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --background: #131312;
+    --foreground: #e9e6df;
+    --primary: #8cc4ea;
+    --border: #2c2b28;
+    --muted: #1d1c1a;
+    --muted-foreground: #a39e94;
+    --card: #1a1918;
+    color-scheme: dark;
+  }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(*),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none !important;
+@layer base {
+  html {
+    scroll-padding-top: 5rem;
   }
 
-  #hero-banner {
-    transition: none !important;
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  a {
+    text-underline-offset: 3px;
+  }
+}
+
+/* The tile image is used only as a mask, so the pattern takes the accent
+   color and follows light/dark mode. A gradient mask fades it out downward. */
+.tile-band {
+  --tile-opacity: 0.11;
+  background-color: var(--primary);
+  opacity: var(--tile-opacity);
+  mask-image:
+    var(--tile-mask),
+    linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
+  mask-size:
+    195px 195px,
+    100% 100%;
+  mask-repeat: repeat, no-repeat;
+  mask-composite: intersect;
+}
+
+:root[data-theme="dark"] .tile-band {
+  --tile-opacity: 0.1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .tile-band {
+    --tile-opacity: 0.1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }

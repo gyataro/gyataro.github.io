@@ -1,70 +1,58 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import ProfileCard from "../components/ProfileCard.astro";
-import Navbar from "../components/Navbar.astro";
-import { getPageMeta } from "../consts";
-import bannerImg from "../assets/banner.png";
+import { Font } from "astro:assets";
+import Seo from "@/components/seo/Seo.astro";
+import Navbar from "@/components/layout/Navbar.astro";
+import Footer from "@/components/layout/Footer.astro";
+import { siteConfig } from "@/config/site";
+import "@/styles/global.css";
 
 interface Props {
-  schema?: Record<string, unknown>;
-  showNavBar?: boolean;
-  showProfileCard?: boolean;
+  title?: string;
+  description?: string;
   noindex?: boolean;
 }
 
-const { schema, showNavBar = true, showProfileCard = true, noindex = false } = Astro.props;
-
-const path = Astro.url.pathname;
-const { title, description } = getPageMeta(path);
+const { title, description, noindex } = Astro.props;
 ---
 
 <!doctype html>
-<html id="root" lang="en" class="bg-white no-js">
+<html lang={siteConfig.lang}>
   <head>
-    <BaseHead title={title} description={description} schema={schema} noindex={noindex} />
+    <Seo title={title} description={description} noindex={noindex} />
+    <Font cssVariable="--font-inter" preload={[{ weight: "400" }]} />
+    <Font cssVariable="--font-newsreader" preload={[{ weight: "600" }]} />
+    <slot name="head" />
+    <script is:inline>
+      // Runs before first paint to avoid a flash of the wrong theme.
+      (() => {
+        let theme;
+        try {
+          theme = localStorage.getItem("theme");
+        } catch {
+          // Storage can be blocked (private mode, disabled site data).
+        }
+        if (theme !== "light" && theme !== "dark") {
+          theme = matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        }
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
   </head>
-  <body class="mx-auto p-10 max-w-5xl">
-    { showNavBar && <Navbar /> }
-    { showNavBar && <div class="h-12" aria-hidden="true" /> }
-
-    { path === "/" && (
-      <div
-        id="hero-banner"
-        data-src={bannerImg.src}
-        class="absolute inset-x-0 top-12 h-48 opacity-0 transition-opacity duration-700 ease-out"
-        style={`background-image: url(${bannerImg.src}); background-repeat: repeat; background-size: 195px;`}
-        aria-hidden="true"
-      />
-    )}
-
-    <div class="grid grid-cols-1 sm:grid-cols-3 sm:gap-20">
-      { showProfileCard && (
-        <aside aria-label="Profile" class:list={[
-          "relative mb-12 sm:mb-0 sm:col-span-1 sm:sticky sm:top-[5.5rem] sm:h-fit",
-          { "hidden sm:block": path !== "/" },
-        ]}>
-          <ProfileCard />
-        </aside>
-      )}
-      <main class:list={["col-span-1 sm:col-span-2 prose", { "sm:pt-[12rem]": path === "/" }]}>
-        <slot />
-      </main>
-    </div>
-
-    { path === "/" && (
-      <script>
-        import { onPageReady } from "../lib/page-scripts"
-
-        onPageReady({ banner: "hero-banner" }, ({ banner }) => {
-          const src = banner.dataset.src
-          if (!src) return
-          banner.classList.remove("opacity-30")
-          banner.classList.add("opacity-0")
-          const img = new Image()
-          img.onload = () => banner.classList.replace("opacity-0", "opacity-30")
-          img.src = src
-        })
-      </script>
-    )}
+  <!-- @container lets full-bleed elements use 100cqw: the body's width,
+       which (unlike 100vw) excludes the scrollbar, so nothing overflows. -->
+  <body class="@container bg-background font-sans text-foreground antialiased">
+    <a
+      href="#main-content"
+      class="sr-only z-50 rounded-md bg-primary px-4 py-2 text-background focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+    >
+      Skip to content
+    </a>
+    <Navbar />
+    <main id="main-content" class="mx-auto w-full max-w-3xl px-4 sm:px-6">
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>

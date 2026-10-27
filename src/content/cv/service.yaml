@@ -1,0 +1,13 @@
+- id: reviewer-www
+  role: Reviewer
+  venue: ACM The Web Conference (WWW)
+  start: 2027
+- id: reviewer-isace
+  role: Reviewer
+  venue: International Sports Analytics Conference and Exhibition (ISACE)
+  start: 2024
+  end: 2026
+- id: acm-member
+  role: ACM Professional Membership
+  start: 2026
+  end: 2027

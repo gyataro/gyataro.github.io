@@ -1,11 +1,12 @@
 ---
 title: "MINES: Explainable Anomaly Detection through Web API Invariant Inference"
 venue: ICSE
+venueFull: International Conference on Software Engineering
 date: 2026-01-02T00:00:00Z
 authors:
   - Wenjie Zhang
   - Yun Lin
-  - Kwok Chun Fung
+  - Chun Fung Amos Kwok
   - Xiwen Teoh
   - Xiaofei Xie
   - Frank Liauw

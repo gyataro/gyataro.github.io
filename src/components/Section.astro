@@ -1,0 +1,23 @@
+---
+import { sections, type SectionId } from "@/config/site";
+
+interface Props {
+  id: SectionId;
+}
+
+const { id } = Astro.props;
+const { title } = sections.find((section) => section.id === id)!;
+---
+
+<section id={id} aria-labelledby={`${id}-heading`} class="py-8">
+  <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
+    <h2
+      id={`${id}-heading`}
+      class="font-serif text-2xl font-semibold tracking-tight"
+    >
+      {title}
+    </h2>
+    <slot name="aside" />
+  </div>
+  <slot />
+</section>

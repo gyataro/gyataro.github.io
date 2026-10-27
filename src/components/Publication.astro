@@ -1,0 +1,73 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { EXTERNAL_LINK_ATTRS, siteConfig } from "@/config/site";
+import { formatAuthors, venueLabel } from "@/utils/publications";
+
+interface Props {
+  publication: CollectionEntry<"publications">["data"];
+}
+
+const {
+  title,
+  venue,
+  venueFull,
+  date,
+  authors,
+  me,
+  cofirst,
+  corresponding,
+  links,
+} = Astro.props.publication;
+
+const formattedAuthors = formatAuthors(authors, {
+  me: me ?? siteConfig.name,
+  cofirst,
+  corresponding,
+});
+// "ACM SIGSAC Conference on ... Security (CCS 2026)"
+const venueText = venueLabel(venue, date);
+const venueLine =
+  venueFull && venueText
+    ? `${venueFull} (${venueText})`
+    : (venueFull ?? venueText);
+const linkItems = [
+  { href: links?.paper, label: "Paper" },
+  { href: links?.website, label: "Project" },
+  { href: links?.code, label: "Code" },
+].filter((link): link is { href: string; label: string } => Boolean(link.href));
+---
+
+<article class="flex flex-col gap-1.5">
+  <h4 class="leading-snug font-medium text-foreground">
+    {links?.paper ? (
+      <a
+        href={links.paper}
+        {...EXTERNAL_LINK_ATTRS}
+        class="hover:text-primary hover:underline"
+      >
+        {title}
+      </a>
+    ) : (
+      title
+    )}
+  </h4>
+  {venueLine && <p class="text-sm text-muted-foreground italic">{venueLine}</p>}
+  <p class="text-sm leading-relaxed text-muted-foreground">
+    {formattedAuthors.map(({ name, isMe, marker }, i) =>
+      // Keep on one line: line breaks between inline elements render as spaces.
+      // prettier-ignore
+      <><span class:list={[isMe && "font-semibold text-foreground"]}>{name}{marker && <sup>{marker}</sup>}</span>{i < formattedAuthors.length - 1 && ", "}</>,
+    )}
+  </p>
+  <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+    {linkItems.map(({ href, label }) => (
+      <a
+        href={href}
+        {...EXTERNAL_LINK_ATTRS}
+        class="text-primary hover:underline"
+      >
+        {label}
+      </a>
+    ))}
+  </div>
+</article>

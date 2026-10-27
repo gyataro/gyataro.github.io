@@ -1,0 +1,27 @@
+---
+interface Props {
+  period: string;
+  title: string;
+  subtitle?: string;
+  details?: readonly string[];
+}
+
+const { period, title, subtitle, details } = Astro.props;
+---
+
+<li class="grid gap-1 py-3 first:pt-0 sm:grid-cols-[6.5rem_1fr] sm:gap-6">
+  <span class="text-sm font-semibold text-muted-foreground tabular-nums">
+    {period}
+  </span>
+  <div>
+    <p class="font-medium">{title}</p>
+    {subtitle && <p class="text-sm text-muted-foreground">{subtitle}</p>}
+    {details && (
+      <ul class="mt-1 list-disc pl-5 text-sm text-muted-foreground marker:text-border">
+        {details.map((detail) => (
+          <li>{detail}</li>
+        ))}
+      </ul>
+    )}
+  </div>
+</li>

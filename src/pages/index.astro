@@ -1,23 +1,280 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import { EXTERNAL_LINK_ATTRS, getPageSchema } from "../consts";
+import { getCollection } from "astro:content";
+import { Image, getImage } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Schema from "@/components/seo/Schema.astro";
+import Section from "@/components/Section.astro";
+import Publication from "@/components/Publication.astro";
+import CvEntry from "@/components/CvEntry.astro";
+import TableOfContents from "@/components/layout/TableOfContents.astro";
+import ContactIcon from "@/components/ui/ContactIcon.astro";
+import { EXTERNAL_LINK_ATTRS, siteConfig } from "@/config/site";
+import { buildProfileSchema } from "@/utils/schema";
+import { groupByYear, sortByDateDesc } from "@/utils/publications";
+import { formatPeriod, groupBy, sortByStartDesc } from "@/utils/period";
+import profile from "@/assets/profile.jpg";
+import tileMask from "@/assets/tile-mask.png";
 
-const schema = await getPageSchema("/");
+const publications = sortByDateDesc(await getCollection("publications"));
+const awards = sortByDateDesc(await getCollection("awards"));
+const education = sortByStartDesc(await getCollection("education"));
+const experience = sortByStartDesc(await getCollection("experience"));
+const talks = (await getCollection("talks")).sort(
+  (a, b) => b.data.year - a.data.year,
+);
+const teaching = sortByStartDesc(await getCollection("teaching"));
+// Same-role entries (e.g. all Reviewer roles) sit together, as in the CV.
+// Groups are ordered by their most recent entry, newest first within each.
+const service = groupBy(
+  sortByStartDesc(await getCollection("service")),
+  (entry) => entry.data.role,
+).flatMap(([, entries]) => entries);
+
+const publicationsByYear = groupByYear(publications);
+const hasCofirst = publications.some((p) => p.data.cofirst);
+const hasCorresponding = publications.some((p) => p.data.corresponding);
+
+const schemaImage = await getImage({ src: profile, width: 800, format: "jpg" });
+const schema = buildProfileSchema({
+  imageUrl: new URL(schemaImage.src, siteConfig.url).toString(),
+  dateModified: new Date(),
+  publications,
+  awards,
+});
+
+const links = [
+  { label: "CV", href: siteConfig.cvPath, icon: "cv" },
+  ...siteConfig.socialLinks,
+  { label: "Email", href: `mailto:${siteConfig.email}`, icon: "email" },
+] as const;
+// Two rows of three, each link at its natural width.
+const linkRows = [links.slice(0, 3), links.slice(3)];
+const { chineseName, pronunciation } = siteConfig;
+const opensInNewTab = (href: string) => /^https?:/.test(href);
 ---
 
-<BaseLayout schema={schema}>
-  <h2 class="mb-1">About me</h2>
-  <p>
-    I am a 2nd year Ph.D. candidate jointly advised by
-    <a href="https://www.comp.nus.edu.sg/~dongjs/" {...EXTERNAL_LINK_ATTRS}>Prof. Jin Song Dong</a> at the Programming Languages and Software Engineering (PLSE) Lab
-    under National University of Singapore (NUS),
-    and by <a href="http://linyun.info/" {...EXTERNAL_LINK_ATTRS}>Prof. Yun Lin</a> at the CoPhi Research Group
-    under Shanghai Jiao Tong University (SJTU). 
-  </p>
+<BaseLayout>
+  <Schema slot="head" schema={schema} />
+  <TableOfContents />
 
-  <p>
-    My research addresses a core challenge in human-agent interaction: <b>how to make software agents capable and reliable
-    in real-world digital environments</b>. I design agents that reason about graphical user interfaces by grounding visual information in structured representations.
-    I apply this work to <b>Internet security and software testing</b>, where agents help detect threats, uncover bugs, and verify that interfaces behave as intended.
-  </p>
+  <section
+    aria-labelledby="name"
+    class="relative isolate flex flex-col-reverse gap-6 pt-12 pb-10 sm:flex-row sm:items-center sm:gap-10 sm:pt-16"
+  >
+    <!-- Peranakan tile band: full-bleed behind the hero, tinted with the
+         theme's accent color, fading out toward the content. -->
+    <div
+      aria-hidden="true"
+      class="tile-band pointer-events-none absolute -top-16 bottom-0 left-1/2 -z-10 w-[100cqw] -translate-x-1/2"
+      style={`--tile-mask: url(${tileMask.src})`}
+    ></div>
+    <div class="flex-1">
+      <!-- Easter egg: hovering, tapping or focusing the name reveals how to
+           say it. The card sits outside the <h1> so it never becomes part of
+           the heading text; it stays in the HTML for search engines. -->
+      <div class="group relative w-fit">
+        <h1
+          id="name"
+          class="font-serif text-4xl font-semibold tracking-tight sm:text-5xl"
+        >
+          <span
+            id="name-text"
+            tabindex="0"
+            aria-describedby="name-pronunciation"
+            class="cursor-help rounded-sm focus-visible:outline-offset-4"
+          >
+            {siteConfig.name}
+          </span>
+        </h1>
+        <div
+          id="name-pronunciation"
+          role="tooltip"
+          class="invisible absolute top-full left-0 z-20 mt-2 w-max max-w-[calc(100cqw-2rem)] translate-y-1 rounded-md border border-border bg-card px-3 py-2 text-sm text-muted-foreground opacity-0 shadow-lg transition duration-200 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100"
+        >
+          <!-- prettier-ignore -->
+          <dl class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5">
+            <dt class="font-medium">Chinese</dt>
+            <dd><span lang="zh-Hans" class="text-foreground">{chineseName.hanzi}</span> <span lang="zh-Latn-pinyin">{chineseName.pinyin}</span> /{chineseName.ipa}/</dd>
+            <dt class="font-medium">English</dt>
+            <dd>/{pronunciation.ipa}/ ({pronunciation.respelling})</dd>
+          </dl>
+        </div>
+      </div>
+      <p class="mt-4 text-lg leading-snug">
+        {siteConfig.jobTitle} in {siteConfig.field}
+        <br />
+        <a
+          href={siteConfig.university.url}
+          {...EXTERNAL_LINK_ATTRS}
+          class="hover:text-primary hover:underline"
+        >
+          {siteConfig.university.name}
+        </a>
+      </p>
+      <div class="mt-5 flex flex-col gap-y-2 text-sm">
+        {linkRows.map((row) => (
+          <ul class="flex flex-wrap gap-x-5 gap-y-2">
+            {row.map(({ label, href, icon }) => (
+              <li>
+                <a
+                  href={href}
+                  {...(opensInNewTab(href) ? EXTERNAL_LINK_ATTRS : {})}
+                  class="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-primary"
+                >
+                  <ContactIcon name={icon} class="size-4" />
+                  <span>{label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
+    <Image
+      src={profile}
+      alt={`Portrait of ${siteConfig.name}`}
+      width={176}
+      densities={[1.5, 2]}
+      loading="eager"
+      fetchpriority="high"
+      class="size-36 rounded-2xl object-cover object-top shadow-sm ring-1 ring-border sm:size-44"
+    />
+  </section>
+
+  <Section id="about">
+    <div class="flex flex-col gap-4 leading-relaxed">
+      <!-- prettier-ignore -->
+      <p>
+        I am a Ph.D. candidate in Computer Science at the National University of Singapore (NUS). I'm jointly advised by
+        <a href="https://www.comp.nus.edu.sg/~dongjs/" {...EXTERNAL_LINK_ATTRS} class="text-primary hover:underline">Prof. Jin Song Dong</a>
+        at the Programming Languages and Software Engineering (PLSE) Lab at NUS, and by
+        <a href="http://linyun.info/" {...EXTERNAL_LINK_ATTRS} class="text-primary hover:underline">Prof. Yun Lin</a>
+        at the CoPhi Research Group at Shanghai Jiao Tong University (SJTU).
+      </p>
+      <!-- prettier-ignore -->
+      <p>
+        My research addresses a core challenge in human-agent interaction:
+        <strong>how to make software agents capable and reliable in real-world digital environments</strong>.
+        I design agents that reason about graphical user interfaces by
+        grounding visual information in structured representations. I apply this
+        work to <strong>Internet security and software testing</strong>, where
+        agents help detect threats, uncover bugs, and verify that interfaces
+        behave as intended.
+      </p>
+    </div>
+  </Section>
+
+  <Section id="publications">
+    {(hasCofirst || hasCorresponding) && (
+      <p slot="aside" class="flex gap-3 text-sm text-muted-foreground">
+        {hasCofirst && (
+          <span>
+            <sup>*</sup> co-first author
+          </span>
+        )}
+        {hasCorresponding && (
+          <span>
+            <sup>#</sup> corresponding author
+          </span>
+        )}
+      </p>
+    )}
+    <div class="flex flex-col gap-10">
+      {publicationsByYear.map(([year, entries]) => (
+        <div class="grid gap-4 sm:grid-cols-[4rem_1fr] sm:gap-6">
+          <h3 class="text-sm font-semibold text-muted-foreground sm:pt-0.5">
+            {year}
+          </h3>
+          <div class="flex flex-col gap-6">
+            {entries.map(({ data }) => (
+              <Publication publication={data} />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <Section id="education">
+    <ul class="flex flex-col divide-y divide-border">
+      {education.map(({ data }) => (
+        <CvEntry
+          period={formatPeriod(data)}
+          title={`${data.degree}, ${data.field}`}
+          subtitle={data.institution}
+          details={data.details}
+        />
+      ))}
+    </ul>
+  </Section>
+
+  <Section id="experience">
+    <ul class="flex flex-col divide-y divide-border">
+      {experience.map(({ data }) => (
+        <CvEntry
+          period={formatPeriod(data)}
+          title={data.role}
+          subtitle={data.organization}
+          details={data.details}
+        />
+      ))}
+    </ul>
+  </Section>
+
+  <Section id="talks">
+    <ul class="flex flex-col divide-y divide-border">
+      {talks.map(({ data }) => (
+        <CvEntry
+          period={String(data.year)}
+          title={data.title}
+          subtitle={data.event}
+        />
+      ))}
+    </ul>
+  </Section>
+
+  <Section id="teaching">
+    <ul class="flex flex-col divide-y divide-border">
+      {teaching.map(({ data }) => (
+        <CvEntry
+          period={formatPeriod(data)}
+          title={data.role}
+          subtitle={data.organization}
+          details={data.details}
+        />
+      ))}
+    </ul>
+  </Section>
+
+  <Section id="service">
+    <ul class="flex flex-col divide-y divide-border">
+      {service.map(({ data }) => (
+        <CvEntry
+          period={formatPeriod(data)}
+          title={data.role}
+          subtitle={data.venue}
+        />
+      ))}
+    </ul>
+  </Section>
+
+  <Section id="awards">
+    <ul class="flex flex-col divide-y divide-border">
+      {awards.map(({ data }) => (
+        <CvEntry
+          period={String(data.date.getUTCFullYear())}
+          title={data.title}
+          subtitle={data.source}
+        />
+      ))}
+    </ul>
+  </Section>
 </BaseLayout>
+
+<script>
+  // Escape hides the pronunciation card when it was opened via focus or tap.
+  const name = document.getElementById("name-text");
+  name?.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") name.blur();
+  });
+</script>

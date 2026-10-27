@@ -1,5 +1,5 @@
 ---
-title: Research Achievement Award (Y25/26)
-source: National University of Singapore
-date: 2026-01-06
+title: Research Achievement Award
+source: National University of Singapore, AY2025/2026 Semester 1
+date: 2025-12-01
 ---

@@ -1,0 +1,18 @@
+---
+import { siteConfig } from "@/config/site";
+
+const updated = new Date().toLocaleDateString("en-US", {
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+});
+---
+
+<footer class="mt-24 border-t border-border">
+  <div class="mx-auto flex max-w-3xl flex-col gap-1 px-4 py-8 text-sm text-muted-foreground sm:flex-row sm:justify-between sm:px-6">
+    <p>
+      &copy; {new Date().getFullYear()} {siteConfig.name}
+    </p>
+    <p>Last updated {updated}</p>
+  </div>
+</footer>

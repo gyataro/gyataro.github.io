@@ -1,6 +1,7 @@
 ---
 title: Are CAPTCHAs Still Bot-hard? Generalized Visual CAPTCHA Solving with Agentic Vision Language Model
 venue: USENIX Security
+venueFull: USENIX Security Symposium
 date: 2025-08-01T00:00:00Z
 authors:
   - Xiwen Teoh
