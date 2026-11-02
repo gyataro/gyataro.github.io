@@ -4,9 +4,8 @@ import ThemeToggle from "@/components/ui/ThemeToggle.astro";
 
 interface Props {
   /**
-   * Float over the hero: transparent at the top of the page, solid once
-   * scrolled, with the site name shown only after the page's own <h1 id="name">
-   * has scrolled away.
+   * Float over the hero: transparent at the top of the page, then solid
+   * with the site name once the page's own <h1 id="name"> has scrolled away.
    */
   overlay?: boolean;
 }
@@ -99,22 +98,24 @@ const { overlay = false } = Astro.props;
       link.addEventListener("click", () => menu.hidePopover()),
     );
 
-  // Overlay header: solid once the page is scrolled, and the site name only
-  // once the hero's name heading has gone up under the header.
+  // Overlay header: bare until the hero's name heading has gone up under it,
+  // then solid with the site name. One signal for both, so the bar never
+  // shows up empty.
   const header = document.getElementById("site-header");
   if (header?.hasAttribute("data-overlay")) {
-    const update = () =>
-      header.toggleAttribute("data-scrolled", window.scrollY > 8);
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-
     const heading = document.getElementById("name");
     if (heading) {
       new IntersectionObserver(
+        // Out of view *above* the header's bottom edge (the root's top),
+        // not below the viewport. Compare with that edge, not with 0: the
+        // callback fires the moment the heading slides under the header,
+        // when its top is still at a small positive y, and doesn't fire
+        // again until it comes back.
         ([entry]) =>
           header.toggleAttribute(
             "data-past-name",
-            !entry.isIntersecting && entry.boundingClientRect.top < 0,
+            !entry.isIntersecting &&
+              entry.boundingClientRect.top < (entry.rootBounds?.top ?? 0),
           ),
         { rootMargin: `-${header.offsetHeight}px 0px 0px 0px` },
       ).observe(heading);

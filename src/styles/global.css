@@ -169,8 +169,8 @@
 
 /* Overlay navbar (home page): it floats over the hero instead of taking
    space. At the top of the page it is bare, just the menu and theme buttons
-   over the tiles; once scrolled it gets its background and border, and the
-   site name fades in after the hero's name heading has gone. Without JS (no
+   over the tiles. Once the hero's name heading has gone up under it, the
+   background, border and site name all fade in together. Without JS (no
    data-js) it stays in its solid state. */
 header[data-overlay] {
   position: fixed;
@@ -186,7 +186,7 @@ header[data-overlay] .site-brand {
     color 0.15s ease;
 }
 
-:root[data-js] header[data-overlay]:not([data-scrolled]) {
+:root[data-js] header[data-overlay]:not([data-past-name]) {
   border-color: transparent;
   background-color: transparent;
   backdrop-filter: none;
