@@ -121,7 +121,8 @@
 /* The tile image is used only as a mask, so the pattern takes a theme color.
    Light mode uses the original tiles' navy: the teal-leaning link blue turns
    gray-green when blended thinly over the warm cream background. A gradient
-   mask fades the band out downward. */
+   mask keeps the band solid down to --fade-start, then fades it out so it is
+   fully gone by --fade-end. */
 .tile-band {
   --tile-color: #2d3276;
   --tile-opacity: 0.11;
@@ -129,7 +130,12 @@
   opacity: var(--tile-opacity);
   mask-image:
     var(--tile-mask),
-    linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
+    linear-gradient(
+      to bottom,
+      #000 0,
+      #000 var(--fade-start, 30%),
+      transparent var(--fade-end, 100%)
+    );
   mask-size:
     195px 195px,
     100% 100%;
@@ -149,8 +155,99 @@
   }
 }
 
+/* Overlay navbar (home page): it floats over the hero instead of taking
+   space. At the top of the page it is bare, just the menu and theme buttons
+   over the tiles; once scrolled it gets its background and border, and the
+   site name fades in after the hero's name heading has gone. Without JS (no
+   data-js) it stays in its solid state. */
+header[data-overlay] {
+  position: fixed;
+  inset-inline: 0;
+  transition-property: background-color, border-color, backdrop-filter;
+  transition-duration: 0.25s;
+}
+
+header[data-overlay] .site-brand {
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    color 0.15s ease;
+}
+
+:root[data-js] header[data-overlay]:not([data-scrolled]) {
+  border-color: transparent;
+  background-color: transparent;
+  backdrop-filter: none;
+}
+
+:root[data-js]
+  header[data-overlay]:not([data-past-name])
+  .site-brand:not(:focus-visible) {
+  opacity: 0;
+  transform: translateY(0.25rem);
+  pointer-events: none;
+}
+
+/* With the section menu open, the header and menu read as one solid sheet:
+   the header turns opaque (name shown), and the menu's backdrop dims only the
+   page below it, leaving the header (3.55rem tall) undimmed. */
+#site-header:has(#site-menu:popover-open) {
+  border-color: transparent;
+  background-color: var(--background);
+  backdrop-filter: none;
+  transition: none;
+}
+
+#site-header:has(#site-menu:popover-open) .site-brand {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+#site-menu::backdrop {
+  background: linear-gradient(
+    to bottom,
+    transparent 3.6rem,
+    rgb(0 0 0 / 0.2) 3.6rem
+  );
+}
+
+/* Wide screens have the side table of contents, so there is no navbar bar:
+   the header sits at the top of the page and scrolls away with it, leaving
+   only the theme toggle in the top-right of the content column. */
+@media (width >= 80rem) {
+  #site-header {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    border-color: transparent;
+    background-color: transparent;
+    backdrop-filter: none;
+    pointer-events: none;
+  }
+
+  #site-header .site-brand {
+    display: none;
+  }
+
+  #site-header nav {
+    justify-content: flex-end;
+  }
+
+  #theme-toggle {
+    pointer-events: auto;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  header[data-overlay],
+  header[data-overlay] .site-brand {
+    transition: none;
   }
 }

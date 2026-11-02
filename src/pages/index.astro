@@ -53,19 +53,23 @@ const { chineseName, pronunciation } = siteConfig;
 const opensInNewTab = (href: string) => /^https?:/.test(href);
 ---
 
-<BaseLayout>
+<BaseLayout overlayNav>
   <Schema slot="head" schema={schema} />
   <TableOfContents />
 
   <section
     aria-labelledby="name"
-    class="relative isolate flex flex-col-reverse gap-6 pt-12 pb-10 sm:flex-row sm:items-center sm:gap-10 sm:pt-16"
+    class="relative isolate flex flex-col-reverse gap-6 pt-24 pb-10 sm:flex-row sm:items-center sm:gap-10 sm:pt-28"
   >
-    <!-- Peranakan tile band: full-bleed behind the hero, tinted with the
-         theme's accent color, fading out toward the content. -->
+    <!-- Peranakan tile band: full-bleed from the very top of the page (behind
+         the transparent navbar), tinted with the theme's accent color. It fades
+         out above the name and is gone by the name's mid-height
+         (--fade-end): sm+ that is 7rem padding + half the 3rem line; below
+         sm the portrait (9rem + 1.5rem gap) comes first and the line is
+         2.5rem. -->
     <div
       aria-hidden="true"
-      class="tile-band pointer-events-none absolute -top-16 bottom-0 left-1/2 -z-10 w-[100cqw] -translate-x-1/2"
+      class="tile-band pointer-events-none absolute top-0 bottom-0 left-1/2 -z-10 w-[100cqw] -translate-x-1/2 [--fade-end:17.75rem] [--fade-start:9rem] sm:[--fade-end:8.5rem] sm:[--fade-start:3rem]"
       style={`--tile-mask: url(${tileMask.src})`}
     ></div>
     <div class="flex-1">

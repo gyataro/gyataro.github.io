@@ -10,9 +10,11 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  /** Float a transparent navbar over the page's hero (see Navbar). */
+  overlayNav?: boolean;
 }
 
-const { title, description, noindex } = Astro.props;
+const { title, description, noindex, overlayNav } = Astro.props;
 ---
 
 <!doctype html>
@@ -37,6 +39,8 @@ const { title, description, noindex } = Astro.props;
             : "light";
         }
         document.documentElement.setAttribute("data-theme", theme);
+        // Lets CSS start the overlay navbar bare only when JS can fill it in.
+        document.documentElement.setAttribute("data-js", "");
       })();
     </script>
   </head>
@@ -49,7 +53,7 @@ const { title, description, noindex } = Astro.props;
     >
       Skip to content
     </a>
-    <Navbar />
+    <Navbar overlay={overlayNav} />
     <main id="main-content" class="mx-auto w-full max-w-3xl px-4 sm:px-6">
       <slot />
     </main>
