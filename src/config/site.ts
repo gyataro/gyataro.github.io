@@ -20,7 +20,7 @@ export const siteConfig = {
   url: "https://xiwen.me",
   lang: "en",
   locale: "en_US",
-  title: "Xiwen Teoh · PhD Candidate in Computer Science, NUS",
+  title: "Xiwen Teoh",
   description:
     "Xiwen Teoh (Teoh Xiwen) is a PhD candidate in Computer Science at the National University of Singapore, building AI agents for GUI testing, web security, and phishing detection.",
   jobTitle: "PhD Candidate",
