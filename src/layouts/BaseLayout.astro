@@ -12,9 +12,11 @@ interface Props {
   noindex?: boolean;
   /** Float a transparent navbar over the page's hero (see Navbar). */
   overlayNav?: boolean;
+  /** Just the page content, centred in the window: no navbar or footer. */
+  bare?: boolean;
 }
 
-const { title, description, noindex, overlayNav } = Astro.props;
+const { title, description, noindex, overlayNav, bare } = Astro.props;
 ---
 
 <!doctype html>
@@ -47,16 +49,24 @@ const { title, description, noindex, overlayNav } = Astro.props;
   <!-- @container lets full-bleed elements use 100cqw: the body's width,
        which (unlike 100vw) excludes the scrollbar, so nothing overflows. -->
   <body class="@container bg-background font-sans antialiased">
-    <a
-      href="#main-content"
-      class="sr-only z-50 rounded-md bg-primary px-4 py-2 text-background focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
-    >
-      Skip to content
-    </a>
-    <Navbar overlay={overlayNav} />
-    <main id="main-content" class="mx-auto w-full max-w-3xl px-4 sm:px-6">
-      <slot />
-    </main>
-    <Footer />
+    {bare ? (
+      <main class="grid min-h-dvh place-items-center px-4">
+        <slot />
+      </main>
+    ) : (
+      <>
+        <a
+          href="#main-content"
+          class="sr-only z-50 rounded-md bg-primary px-4 py-2 text-background focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+        >
+          Skip to content
+        </a>
+        <Navbar overlay={overlayNav} />
+        <main id="main-content" class="mx-auto w-full max-w-3xl px-4 sm:px-6">
+          <slot />
+        </main>
+        <Footer />
+      </>
+    )}
   </body>
 </html>

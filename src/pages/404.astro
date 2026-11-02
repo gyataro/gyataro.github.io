@@ -1,25 +1,76 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { EXTERNAL_LINK_ATTRS } from "@/config/site";
+import junglefowl from "@/assets/junglefowl-mask.png";
 ---
 
 <BaseLayout
   title="Page not found · Xiwen Teoh"
   description="The page you are looking for does not exist."
   noindex
+  bare
 >
-  <section class="py-24 text-center">
-    <p class="text-sm font-semibold text-muted-foreground">404</p>
-    <h1 class="mt-2 font-serif text-4xl font-semibold tracking-tight">
-      Page not found
-    </h1>
-    <p class="mt-4 text-muted-foreground">
-      The page you are looking for does not exist or has moved.
+  <div class="flex w-full max-w-2xl flex-col items-center">
+    <!-- A red junglefowl (Singapore's wild chicken) says the line. The
+         painting is used as a mask filled with the text colour, so it reads
+         as a greyscale ink drawing in either theme. Everything is sized in
+         percentages of this wrapper's width, so the bubble's tail stays
+         pointed at the rooster's head at any size: the bird starts 30% down
+         (padding-top is a share of the width) and the bubble sits above its
+         head, with the tail tip just right of the comb. -->
+    <div class="relative w-full pt-[30%]">
+      <div
+        role="img"
+        aria-label="A red junglefowl, a rooster, drawn in greyscale"
+        class="junglefowl aspect-[720/578] w-[58%]"
+        style={`--mask: url(${junglefowl.src})`}
+      ></div>
+      <div class="absolute top-0 left-[36%] aspect-[385/240] w-[54%]">
+        <!-- Hand-drawn bubble by qubodup (Openclipart, CC0), filled solid
+             instead of outlined. One path, so the tail is part of the body. -->
+        <svg
+          aria-hidden="true"
+          class="absolute inset-0 h-full w-full text-foreground"
+          viewBox="0 0 385 240"
+        >
+          <path
+            fill="currentColor"
+            d="M171.0263 229.7791c11.9177-19.0128 15.6256-41.7699-11.1868-36.4057s-47.0376 10.5896-80.154 9.9999-67.398-25.83-71.045-57.4592C4.9935 114.285 14.164 89.223 33.6158 64.5428c19.4517-24.68 80.1824-58.3616 140.6498-55.4489s74.1328 23.2083 103.56 20.6576 48.2666-4.522 68.5089 1.6553 30.029 15.4615 30.7588 43.4613-7.0315 37.6004-16.3598 54.5733c-9.3283 16.9728-24.7617 31.1768-41.0157 42.7113-16.254 11.5344-20.8757 17.1197-38.8814 17.2294-18.0057.1098-44.9752-8.7749-60.0529-.9602-12.2565 9.6318-20.4699 31.0818-49.7572 41.3572z"
+          ></path>
+        </svg>
+        <!-- Text sits in the body of the bubble, above the tail. -->
+        <div class="absolute inset-x-[7%] top-[8%] bottom-[22%] flex flex-col items-center justify-center text-center">
+          <h1 class="font-serif text-xl leading-tight font-semibold tracking-tight text-background sm:text-4xl">
+            Nothing here lah!
+          </h1>
+          <a
+            href="/"
+            class="mt-1 inline-block text-sm text-(--primary-inverse) underline decoration-1 underline-offset-[3px] hover:decoration-2 sm:mt-3 sm:text-base"
+          >
+            Go home &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <p class="mt-14 text-center text-xs leading-relaxed text-muted-foreground">
+      Red junglefowl by George Edward Lodge, 1921, via
+      <a
+        href="https://commons.wikimedia.org/wiki/File:Red_Junglefowl_by_George_Edward_Lodge_white_background.png"
+        {...EXTERNAL_LINK_ATTRS}
+        class="underline underline-offset-2 hover:text-foreground"
+      >
+        Wikimedia Commons
+      </a>
+      <br />
+      Speech bubble by qubodup, via
+      <a
+        href="https://openclipart.org/detail/355112/rounded-hand-drawn-speech-bubble-left"
+        {...EXTERNAL_LINK_ATTRS}
+        class="underline underline-offset-2 hover:text-foreground"
+      >
+        Openclipart
+      </a>
     </p>
-    <a
-      href="/"
-      class="mt-8 inline-block rounded-full border border-border bg-card px-4 py-2 text-sm transition-colors hover:border-primary hover:text-primary"
-    >
-      Back to home
-    </a>
-  </section>
+  </div>
 </BaseLayout>

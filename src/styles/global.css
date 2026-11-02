@@ -48,6 +48,8 @@
   --foreground: #1c1b18;
   --body-foreground: var(--foreground);
   --primary: #0060df;
+  /* Accent for text on an inverted (foreground-coloured) surface. */
+  --primary-inverse: #4fb3ff;
   --border: #e6e2d9;
   --muted: #f2efe8;
   --muted-foreground: #5c5850;
@@ -64,6 +66,7 @@
   --foreground: #f4f3ef;
   --body-foreground: #dcdad4;
   --primary: #4fb3ff;
+  --primary-inverse: #0060df;
   --border: #2a2a2b;
   --muted: #1a1a1b;
   --muted-foreground: #a8a399;
@@ -78,6 +81,7 @@
     --foreground: #f4f3ef;
     --body-foreground: #dcdad4;
     --primary: #4fb3ff;
+    --primary-inverse: #0060df;
     --border: #2a2a2b;
     --muted: #1a1a1b;
     --muted-foreground: #a8a399;
@@ -141,6 +145,14 @@
     100% 100%;
   mask-repeat: repeat, no-repeat;
   mask-composite: intersect;
+}
+
+/* 404 junglefowl: George Edward Lodge's painting (public domain, 1921)
+   turned into an alpha mask and filled with the text colour, so it reads as
+   a greyscale ink drawing: dark on cream, light on near-black. */
+.junglefowl {
+  background-color: var(--foreground);
+  mask: var(--mask) center / contain no-repeat;
 }
 
 :root[data-theme="dark"] .tile-band {
