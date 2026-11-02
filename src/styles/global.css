@@ -41,10 +41,13 @@
   line-gap-override: 0%;
 }
 
+/* Light mode: the accent is a fully saturated royal blue (5.4:1 on the cream)
+   so links stand apart from the near-black text by hue, not just weight. */
 :root {
   --background: #fbfaf7;
   --foreground: #1c1b18;
-  --primary: #1d5b85;
+  --body-foreground: var(--foreground);
+  --primary: #0060df;
   --border: #e6e2d9;
   --muted: #f2efe8;
   --muted-foreground: #5c5850;
@@ -52,38 +55,56 @@
   color-scheme: light;
 }
 
+/* Dark mode is high contrast: near-black ground, near-white text and a
+   saturated blue accent (8.2:1 on the background) that reads as vivid rather
+   than pastel. Running text is a slightly dimmer off-white (13.9:1) so long
+   paragraphs don't glare; headings and bold text keep the brighter white. */
 :root[data-theme="dark"] {
-  --background: #131312;
-  --foreground: #e9e6df;
-  --primary: #8cc4ea;
-  --border: #2c2b28;
-  --muted: #1d1c1a;
-  --muted-foreground: #a39e94;
-  --card: #1a1918;
+  --background: #0d0d0e;
+  --foreground: #f4f3ef;
+  --body-foreground: #dcdad4;
+  --primary: #4fb3ff;
+  --border: #2a2a2b;
+  --muted: #1a1a1b;
+  --muted-foreground: #a8a399;
+  --card: #161617;
   color-scheme: dark;
 }
 
 /* Without JS the theme script never runs, so follow the OS preference. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --background: #131312;
-    --foreground: #e9e6df;
-    --primary: #8cc4ea;
-    --border: #2c2b28;
-    --muted: #1d1c1a;
-    --muted-foreground: #a39e94;
-    --card: #1a1918;
+    --background: #0d0d0e;
+    --foreground: #f4f3ef;
+    --body-foreground: #dcdad4;
+    --primary: #4fb3ff;
+    --border: #2a2a2b;
+    --muted: #1a1a1b;
+    --muted-foreground: #a8a399;
+    --card: #161617;
     color-scheme: dark;
   }
 }
 
 @layer base {
+  /* The body is a size container, and containment stops its background from
+     spreading to the whole window, so short pages need it set here too. */
   html {
     scroll-padding-top: 5rem;
+    background-color: var(--background);
   }
 
   body {
     background-color: var(--background);
+    color: var(--body-foreground);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  strong,
+  b {
     color: var(--foreground);
   }
 
@@ -118,13 +139,13 @@
 
 :root[data-theme="dark"] .tile-band {
   --tile-color: var(--primary);
-  --tile-opacity: 0.1;
+  --tile-opacity: 0.14;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) .tile-band {
     --tile-color: var(--primary);
-    --tile-opacity: 0.1;
+    --tile-opacity: 0.14;
   }
 }
 
