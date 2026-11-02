@@ -263,3 +263,9 @@ header[data-overlay] .site-brand {
     transition: none;
   }
 }
+
+/* Without JS the theme toggle can't do anything (and its icon wouldn't
+   match an OS-chosen dark theme), so hide it; the page follows the OS. */
+:root:not([data-js]) #theme-toggle {
+  display: none;
+}
