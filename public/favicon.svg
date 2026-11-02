@@ -1,3 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 0 100 100">
-    <text y=".90em" font-size="90">🪶</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Cursive x: a thick curled stroke crossed by a hairline. Colors follow
+       the site's accent; browsers that support it swap to the dark-mode
+       accent when the system is dark. -->
+  <style>
+    .bg { fill: #0060df; }
+    .x { stroke: #fbfaf7; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #4fb3ff; }
+      .x { stroke: #0d0d0e; }
+    }
+  </style>
+  <rect class="bg" width="100" height="100" rx="22" />
+  <g class="x" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke-width="10" d="M24 36 C28 25 38 24 44 34 L58 62 C63 72 71 75 78 66" />
+    <path stroke-width="6" d="M74 28 C64 40 42 62 28 74" />
+  </g>
 </svg>
